@@ -1,5 +1,11 @@
 import { AppHeaderBar } from "@/components/app/AppHeaderBar";
+import {
+  ADMIN_SESSION_COOKIE,
+  isAdminSessionValid,
+} from "@/lib/admin-auth";
 import { createSupabaseAdminClient } from "@/lib/supabase/server";
+import { cookies } from "next/headers";
+import { redirect } from "next/navigation";
 
 export const dynamic = "force-dynamic";
 
@@ -63,6 +69,13 @@ async function getParentInvites() {
 }
 
 export default async function AdminPage() {
+  const cookieStore = await cookies();
+  const adminSession = cookieStore.get(ADMIN_SESSION_COOKIE)?.value;
+
+  if (!isAdminSessionValid(adminSession)) {
+    redirect("/admin/login");
+  }
+
   const { invites, error } = await getParentInvites();
 
   return (
@@ -73,9 +86,19 @@ export default async function AdminPage() {
           <p className="text-xs font-black uppercase tracking-[0.2em] text-canton-green">
             Admin
           </p>
-          <h1 className="mt-2 text-3xl font-black uppercase leading-tight text-canton-ink">
-            Family Invites
-          </h1>
+          <div className="mt-2 flex items-start justify-between gap-4">
+            <h1 className="text-3xl font-black uppercase leading-tight text-canton-ink">
+              Family Invites
+            </h1>
+            <form action="/api/admin/logout" method="post">
+              <button
+                type="submit"
+                className="rounded-full bg-canton-pill px-3 py-2 text-xs font-black uppercase text-canton-ink"
+              >
+                Log Out
+              </button>
+            </form>
+          </div>
           <p className="mt-2 text-sm font-semibold leading-6 text-canton-muted">
             Read-only Supabase check. This list should show the test invite row
             from `parent_invites`.

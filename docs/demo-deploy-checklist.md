@@ -61,9 +61,13 @@ pnpm install
 
 ## 4. Environment Variables
 
-For this UI-only demo, no Supabase or Resend variables are required yet.
+For the protected admin demo, add:
 
-Optional for demo:
+```txt
+ADMIN_ACCESS_PASSWORD=choose-a-temporary-passcode
+```
+
+For generated links, add:
 
 ```txt
 APP_BASE_URL=https://YOUR-VERCEL-DEMO-URL.vercel.app
@@ -72,7 +76,7 @@ APP_BASE_URL=https://YOUR-VERCEL-DEMO-URL.vercel.app
 After the domain is connected:
 
 ```txt
-APP_BASE_URL=https://topdoghoops.com
+APP_BASE_URL=https://www.topdoghoops.com
 ```
 
 ---
