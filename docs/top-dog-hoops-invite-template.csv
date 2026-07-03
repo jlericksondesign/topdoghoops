@@ -1,0 +1,5 @@
+parent_email,parent_name,player_first_name,player_last_initial,grade,gender,division
+parent1@example.com,Test Parent,Maceo,23,5,boy,boys_elementary
+parent2@example.com,Sample Parent,Ava,J,4,girl,girls_elementary
+parent3@example.com,Demo Parent,Liam,K,7,boy,boys_middle_school
+parent4@example.com,Practice Parent,Mia,R,8,girl,girls_middle_school
