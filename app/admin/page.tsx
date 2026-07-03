@@ -5,6 +5,7 @@ import {
 } from "@/lib/admin-auth";
 import { createSupabaseAdminClient } from "@/lib/supabase/server";
 import { cookies } from "next/headers";
+import Link from "next/link";
 import { redirect } from "next/navigation";
 
 export const dynamic = "force-dynamic";
@@ -100,10 +101,17 @@ export default async function AdminPage() {
             </form>
           </div>
           <p className="mt-2 text-sm font-semibold leading-6 text-canton-muted">
-            Read-only Supabase check. This list should show the test invite row
-            from `parent_invites`.
+            Review draft family invitations and import roster CSVs before
+            sending parent emails.
           </p>
         </div>
+
+        <Link
+          href="/admin/import"
+          className="inline-flex h-12 items-center justify-center rounded-xl bg-canton-green px-4 text-sm font-black uppercase tracking-wide text-white"
+        >
+          Import CSV
+        </Link>
 
         {error ? (
           <div className="rounded-xl border-2 border-canton-orange bg-white px-4 py-4">
