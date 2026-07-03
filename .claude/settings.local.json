@@ -1,0 +1,24 @@
+{
+  "permissions": {
+    "allow": [
+      "WebFetch(domain:www.figma.com)",
+      "Bash(python3 -c \"import PIL; print\\(PIL.__version__\\)\")",
+      "Bash(sips -g pixelWidth -g pixelHeight \"/Users/jessicaerickson/Documents/Codex/2026-06-13/i-have-a-github-repo-set/docs/designs/App opener.png\")",
+      "Bash(sips --help)",
+      "Bash(pip3 install *)",
+      "Bash(python3 -c \"import PIL; print\\('ok', PIL.__version__\\)\")",
+      "Bash(python3)",
+      "Bash(python3 -c ' *)",
+      "Bash(mkdir -p /Users/jessicaerickson/Documents/Codex/2026-06-13/i-have-a-github-repo-set/.claude)",
+      "Bash(zsh -lc 'which node; which pnpm; node -v')",
+      "Bash(zsh -lc 'which node; which pnpm; ls -la /usr/local/bin 2>/dev/null; find / -maxdepth 4 -iname \"node\" -type f 2>/dev/null | head -20')",
+      "Bash(zsh -lc 'ls -la ~/.nvm/versions/node 2>/dev/null; ls -la ~/.volta 2>/dev/null; ls -la ~/Library/pnpm 2>/dev/null; command -v fnm; command -v volta; echo done')",
+      "Bash(zsh -lc 'command -v asdf; ls -la ~/.asdf 2>/dev/null; find /Applications -maxdepth 1 -iname \"*node*\" 2>/dev/null; mdfind \"kMDItemFSName == node\" 2>/dev/null | head -20')",
+      "Bash(zsh -lc 'find / -maxdepth 6 -iname \"node\" -not -path \"*/node_modules/*\" 2>/dev/null')",
+      "Bash(zsh -lc 'ls -la /opt 2>/dev/null; ls -la /usr/local 2>/dev/null; ls -la /Library/Frameworks 2>/dev/null | grep -i node; xcrun -f node 2>/dev/null; echo \"---brew---\"; command -v brew; brew --prefix node 2>/dev/null')",
+      "Bash(zsh -lc 'which node pnpm npm; node -v; pnpm -v')",
+      "Bash(mkdir -p \"/Users/jessicaerickson/Documents/Codex/2026-06-13/i-have-a-github-repo-set/app/invite/accept\" \"/Users/jessicaerickson/Documents/Codex/2026-06-13/i-have-a-github-repo-set/app/family/[playerId]/device-setup\" \"/Users/jessicaerickson/Documents/Codex/2026-06-13/i-have-a-github-repo-set/app/pair/[token]\")",
+      "Bash(mkdir -p \"/Users/jessicaerickson/Documents/Codex/2026-06-13/i-have-a-github-repo-set/app/parent-approval/[submissionId]\")"
+    ]
+  }
+}
