@@ -1,5 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import "./globals.css";
+import { inter, pixelifySans, barlow } from "./fonts";
 
 export const metadata: Metadata = {
   title: "Top Dog Hoops",
@@ -20,8 +21,11 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
-      <body>{children}</body>
+    <html
+      lang="en"
+      className={`${inter.variable} ${pixelifySans.variable} ${barlow.variable}`}
+    >
+      <body className="font-sans">{children}</body>
     </html>
   );
 }

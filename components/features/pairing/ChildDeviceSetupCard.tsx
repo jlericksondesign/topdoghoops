@@ -12,7 +12,7 @@ export function ChildDeviceSetupCard({
   return (
     <div className="flex w-full flex-col items-center gap-6 px-1 pb-2 pt-1">
       <div className="text-center">
-        <h2 className="text-2xl font-black uppercase text-canton-ink">
+        <h2 className="font-heading text-2xl font-black uppercase text-canton-ink">
           Child Device Setup
         </h2>
         <p className="mt-1 text-sm font-bold text-canton-muted">

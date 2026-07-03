@@ -28,6 +28,9 @@ export function ApprovalQueueItem({
     >
       <PlayerAvatar jerseyNumber={jerseyNumber} />
       <div className="flex-1">
+        <p className="mb-1 text-[0.68rem] font-bold uppercase tracking-widest text-canton-orange">
+          Needs approval
+        </p>
         <p className="font-bold text-white">{playerName}</p>
         <p className="text-xs text-canton-pill">
           {date} &middot; {submittedAt}

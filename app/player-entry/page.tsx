@@ -41,7 +41,7 @@ export default function PlayerEntryPage() {
           />
         </div>
 
-        <div className="flex h-32 w-32 items-center justify-center">
+        <div className="flex h-96 w-96 items-center justify-center">
           {!isRevealed ? (
             <BasketballGraphic
               className={
@@ -99,7 +99,7 @@ export default function PlayerEntryPage() {
             isRevealed ? "opacity-100" : "pointer-events-none opacity-0"
           }`}
         >
-          <h1 className="text-center text-3xl font-black uppercase leading-tight text-canton-ink">
+          <h1 className="text-center font-heading text-3xl font-black uppercase leading-tight text-canton-ink">
             Let&apos;s Go,
             <br />
             {MOCK_PLAYER_FIRST_NAME}!

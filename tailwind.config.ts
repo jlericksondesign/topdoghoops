@@ -71,6 +71,11 @@ const config: Config = {
         md: "calc(var(--radius) - 2px)",
         sm: "calc(var(--radius) - 4px)",
       },
+      fontFamily: {
+        sans: ["var(--font-inter)", "ui-sans-serif", "system-ui", "sans-serif"],
+        pixel: ["var(--font-pixelify)", "ui-monospace", "monospace"],
+        heading: ["var(--font-barlow)", "Impact", "Arial Black", "sans-serif"],
+      },
     },
   },
   plugins: [require("tailwindcss-animate")],

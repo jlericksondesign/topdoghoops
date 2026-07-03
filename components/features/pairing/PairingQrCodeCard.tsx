@@ -7,13 +7,13 @@ import { PairingQrPlaceholder } from "@/components/features/pairing/PairingQrPla
 type PairingQrCodeCardProps = {
   playerName: string;
   inviteLink: string;
-  onBack: () => void;
+  onClose: () => void;
 };
 
 export function PairingQrCodeCard({
   playerName,
   inviteLink,
-  onBack,
+  onClose,
 }: PairingQrCodeCardProps) {
   const [copied, setCopied] = useState(false);
 
@@ -26,7 +26,7 @@ export function PairingQrCodeCard({
   return (
     <div className="flex w-full flex-col items-center gap-6 px-1 pb-2 pt-1">
       <div className="text-center">
-        <h2 className="text-2xl font-black uppercase text-canton-ink">
+        <h2 className="font-heading text-2xl font-black uppercase text-canton-ink">
           Child Device Setup
         </h2>
         <p className="mt-1 text-sm font-bold text-canton-muted">
@@ -35,8 +35,9 @@ export function PairingQrCodeCard({
       </div>
 
       <p className="text-center text-sm leading-6 text-canton-ink">
-        Scan this QR code from your child&apos;s device or send them the
-        personal invitation code below.
+        Scan this QR code from your child&apos;s device or send them the personal
+        invitation code below. This reconnect link stays tied to Marcus&apos;s
+        player profile, even if another parent opens this setup flow.
       </p>
 
       <PairingQrPlaceholder />
@@ -59,10 +60,10 @@ export function PairingQrCodeCard({
 
       <button
         type="button"
-        onClick={onBack}
+        onClick={onClose}
         className="text-sm uppercase tracking-wide text-canton-muted"
       >
-        &larr; Back
+        Close
       </button>
     </div>
   );

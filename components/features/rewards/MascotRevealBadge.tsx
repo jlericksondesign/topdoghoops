@@ -8,7 +8,7 @@ export function MascotRevealBadge() {
       width={600}
       height={590}
       priority
-      className="mascot-pop-in h-32 w-32 object-contain"
+      className="mascot-pop-in h-96 w-96 object-contain"
     />
   );
 }

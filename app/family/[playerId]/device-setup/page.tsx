@@ -7,10 +7,12 @@ import { FamilySummaryCard } from "@/components/features/family/FamilySummaryCar
 import { PlayerCard } from "@/components/features/family/PlayerCard";
 import { ChildDeviceSetupCard } from "@/components/features/pairing/ChildDeviceSetupCard";
 import { PairingQrCodeCard } from "@/components/features/pairing/PairingQrCodeCard";
+import { MOCK_PENDING_SUBMISSIONS } from "@/lib/mock/approvals";
 
 const MOCK_PLAYER_NAME = "Marcus Johnson";
 const MOCK_JERSEY_NUMBER = 23;
 const MOCK_INVITE_LINK = "topdoghoops.com/pair/mj23-1234";
+const MOCK_DEVICE_PAIRED = true;
 const DISMISS_DRAG_DISTANCE = 80;
 
 export default function DeviceSetupPage({
@@ -20,10 +22,11 @@ export default function DeviceSetupPage({
 }) {
   const { playerId } = use(params);
   const router = useRouter();
-  const [linkGenerated, setLinkGenerated] = useState(false);
+  const [linkGenerated, setLinkGenerated] = useState(MOCK_DEVICE_PAIRED);
   const [dragOffset, setDragOffset] = useState(0);
   const [isDragging, setIsDragging] = useState(false);
   const dragStartY = useRef<number | null>(null);
+  const pendingApprovalCount = MOCK_PENDING_SUBMISSIONS.length;
 
   function dismissSheet() {
     router.push("/family");
@@ -58,12 +61,16 @@ export default function DeviceSetupPage({
     <main className="relative flex min-h-dvh flex-col overflow-hidden bg-canton-cream-grid">
       <AppHeaderBar dashboardHref="/family" />
       <div className="flex flex-1 flex-col items-center gap-8 px-10 pb-10 pt-12">
-        <FamilySummaryCard parentEmail="parent@example.com" pendingApprovalCount={0} />
+        <FamilySummaryCard
+          parentEmail="parent@example.com"
+          pendingApprovalCount={pendingApprovalCount}
+        />
         <PlayerCard
           playerId={playerId}
           playerName={MOCK_PLAYER_NAME}
           jerseyNumber={MOCK_JERSEY_NUMBER}
-          pendingApprovalCount={0}
+          pendingApprovalCount={pendingApprovalCount}
+          devicePaired={MOCK_DEVICE_PAIRED}
         />
       </div>
 
@@ -94,7 +101,7 @@ export default function DeviceSetupPage({
           <PairingQrCodeCard
             playerName={MOCK_PLAYER_NAME}
             inviteLink={MOCK_INVITE_LINK}
-            onBack={() => setLinkGenerated(false)}
+            onClose={dismissSheet}
           />
         ) : (
           <ChildDeviceSetupCard

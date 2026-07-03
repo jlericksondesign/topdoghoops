@@ -11,7 +11,7 @@ export function FamilySummaryCard({
 }: FamilySummaryCardProps) {
   return (
     <div className="flex w-full flex-col items-center gap-4">
-      <h1 className="text-center text-3xl font-black uppercase leading-tight text-canton-ink">
+      <h1 className="text-center font-heading text-3xl font-black uppercase leading-tight text-canton-ink">
         Welcome,
         <br />
         Bulldog Family

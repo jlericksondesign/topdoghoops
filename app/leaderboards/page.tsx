@@ -49,8 +49,8 @@ export default function LeaderboardsPage() {
         <DashboardHeader />
       </Suspense>
       <div className="flex flex-1 flex-col items-center gap-6 px-10 pb-10 pt-10">
-        <h1 className="text-center text-3xl font-black uppercase text-canton-ink">
-          High Score
+        <h1 className="text-center font-heading text-3xl font-black uppercase text-canton-ink">
+          Leaderboard
         </h1>
         <LeaderboardCard
           division={division}

@@ -17,18 +17,26 @@ export function FriendBonusToggle({
         <input
           type="checkbox"
           checked={checked}
-          onChange={(event) => onCheckedChange(event.target.checked)}
+          onChange={(event) => {
+            const nextChecked = event.target.checked;
+            onCheckedChange(nextChecked);
+            if (!nextChecked) {
+              onFriendNameChange("");
+            }
+          }}
           className="h-5 w-5 accent-canton-green"
         />
         Check if you played with a friend
       </label>
-      <input
-        type="text"
-        value={friendName}
-        onChange={(event) => onFriendNameChange(event.target.value)}
-        placeholder="Friends name"
-        className="w-full rounded-lg border-2 border-canton-ink bg-white px-4 py-3 text-sm text-canton-ink placeholder:text-canton-muted focus:outline-none"
-      />
+      {checked ? (
+        <input
+          type="text"
+          value={friendName}
+          onChange={(event) => onFriendNameChange(event.target.value)}
+          placeholder="Friend's name"
+          className="w-full rounded-lg border-2 border-canton-ink bg-white px-4 py-3 text-sm text-canton-ink placeholder:text-canton-muted focus:outline-none"
+        />
+      ) : null}
     </div>
   );
 }

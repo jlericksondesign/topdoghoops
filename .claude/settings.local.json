@@ -18,7 +18,8 @@
       "Bash(zsh -lc 'ls -la /opt 2>/dev/null; ls -la /usr/local 2>/dev/null; ls -la /Library/Frameworks 2>/dev/null | grep -i node; xcrun -f node 2>/dev/null; echo \"---brew---\"; command -v brew; brew --prefix node 2>/dev/null')",
       "Bash(zsh -lc 'which node pnpm npm; node -v; pnpm -v')",
       "Bash(mkdir -p \"/Users/jessicaerickson/Documents/Codex/2026-06-13/i-have-a-github-repo-set/app/invite/accept\" \"/Users/jessicaerickson/Documents/Codex/2026-06-13/i-have-a-github-repo-set/app/family/[playerId]/device-setup\" \"/Users/jessicaerickson/Documents/Codex/2026-06-13/i-have-a-github-repo-set/app/pair/[token]\")",
-      "Bash(mkdir -p \"/Users/jessicaerickson/Documents/Codex/2026-06-13/i-have-a-github-repo-set/app/parent-approval/[submissionId]\")"
+      "Bash(mkdir -p \"/Users/jessicaerickson/Documents/Codex/2026-06-13/i-have-a-github-repo-set/app/parent-approval/[submissionId]\")",
+      "Bash(curl -sI --max-time 10 \"https://fonts.googleapis.com/css2?family=Anton\")"
     ]
   }
 }
