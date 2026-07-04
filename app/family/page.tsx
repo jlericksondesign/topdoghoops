@@ -4,10 +4,7 @@ import { RecentlyApprovedTable } from "@/components/features/approvals/RecentlyA
 import { FamilySummaryCard } from "@/components/features/family/FamilySummaryCard";
 import { PlayerCard } from "@/components/features/family/PlayerCard";
 import { PARENT_INVITE_SESSION_COOKIE } from "@/lib/parent-session";
-import {
-  MOCK_PENDING_SUBMISSIONS,
-  MOCK_RECENTLY_APPROVED_SUBMISSIONS,
-} from "@/lib/mock/approvals";
+import { MOCK_RECENTLY_APPROVED_SUBMISSIONS } from "@/lib/mock/approvals";
 import { createSupabaseAdminClient } from "@/lib/supabase/server";
 import { cookies } from "next/headers";
 
@@ -70,32 +67,32 @@ async function getFamily() {
 }
 
 export default async function FamilyPage() {
-  const pendingApprovalCount = MOCK_PENDING_SUBMISSIONS.length;
+  const pendingApprovalCount = 0;
   const family = await getFamily();
 
   if (!family) {
     return (
       <main className="flex min-h-dvh flex-col bg-canton-cream-grid">
         <AppHeaderBar dashboardHref="/family" />
-        <div className="flex flex-1 flex-col items-center gap-6 px-10 pb-10 pt-12">
-          <FamilySummaryCard
-            parentEmail="parent@example.com"
-            pendingApprovalCount={pendingApprovalCount}
-          />
-          <PlayerCard
-            playerId="marcus-johnson"
-            playerName="Marcus Johnson"
-            jerseyNumber={23}
-            pendingApprovalCount={pendingApprovalCount}
-            devicePaired
-          />
-          <Link
-            href="/leaderboards?from=parent"
-            className="text-sm font-bold uppercase tracking-wide text-canton-ink underline underline-offset-4"
-          >
-            Leaderboard
-          </Link>
-          <RecentlyApprovedTable entries={MOCK_RECENTLY_APPROVED_SUBMISSIONS} />
+        <div className="flex flex-1 flex-col justify-center px-8 pb-10 pt-12">
+          <div className="rounded-2xl border-2 border-canton-ink bg-white px-5 py-6 text-center">
+            <p className="text-xs font-black uppercase tracking-[0.2em] text-canton-green">
+              Family
+            </p>
+            <h1 className="mt-2 text-3xl font-black uppercase leading-tight text-canton-ink">
+              Invite Needed
+            </h1>
+            <p className="mt-3 text-sm font-semibold leading-6 text-canton-muted">
+              Open your Top Dog Hoops invite link to confirm your player and
+              activate this dashboard.
+            </p>
+            <Link
+              href="/"
+              className="mt-5 inline-flex h-12 items-center justify-center rounded-xl bg-canton-green px-5 text-sm font-black uppercase tracking-wide text-white"
+            >
+              Back Home
+            </Link>
+          </div>
         </div>
       </main>
     );
