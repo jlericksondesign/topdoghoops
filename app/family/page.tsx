@@ -4,7 +4,6 @@ import { RecentlyApprovedTable } from "@/components/features/approvals/RecentlyA
 import { FamilySummaryCard } from "@/components/features/family/FamilySummaryCard";
 import { PlayerCard } from "@/components/features/family/PlayerCard";
 import { PARENT_INVITE_SESSION_COOKIE } from "@/lib/parent-session";
-import { MOCK_RECENTLY_APPROVED_SUBMISSIONS } from "@/lib/mock/approvals";
 import { createSupabaseAdminClient } from "@/lib/supabase/server";
 import { cookies } from "next/headers";
 
@@ -22,6 +21,13 @@ type Player = {
   division: string;
 };
 
+type RecentlyApprovedEntry = {
+  playerName: string;
+  dateShort: string;
+  submittedAt: string;
+  shotTotal: number;
+};
+
 function getJerseyNumber(player: Player) {
   const numericLastInitial = Number.parseInt(player.last_initial, 10);
 
@@ -30,6 +36,20 @@ function getJerseyNumber(player: Player) {
   }
 
   return player.grade;
+}
+
+function formatDateShort(value: string) {
+  return new Intl.DateTimeFormat("en", {
+    month: "2-digit",
+    day: "2-digit",
+  }).format(new Date(value));
+}
+
+function formatTime(value: string) {
+  return new Intl.DateTimeFormat("en", {
+    hour: "numeric",
+    minute: "2-digit",
+  }).format(new Date(value));
 }
 
 async function getFamily() {
@@ -60,9 +80,42 @@ async function getFamily() {
     return null;
   }
 
+  const typedPlayers = players as Player[];
+  const playerIds = typedPlayers.map((player) => player.id);
+  const { data: approvedSubmissions } = await supabase
+    .from("shot_submissions")
+    .select("player_id,submission_date,total_baskets,approved_at")
+    .in("player_id", playerIds)
+    .eq("status", "approved")
+    .order("approved_at", { ascending: false })
+    .limit(5);
+  const playerNameById = new Map(
+    typedPlayers.map((player) => [
+      player.id,
+      `${player.first_name} ${player.last_initial}.`,
+    ]),
+  );
+
   return {
     invite: invite as ParentInvite,
-    players: players as Player[],
+    players: typedPlayers,
+    recentlyApproved: (approvedSubmissions ?? []).flatMap((submission) => {
+      const playerName = playerNameById.get(submission.player_id);
+      const approvedAt = submission.approved_at;
+
+      if (!playerName || !approvedAt) {
+        return [];
+      }
+
+      return [
+        {
+          playerName,
+          dateShort: formatDateShort(submission.submission_date),
+          submittedAt: formatTime(approvedAt),
+          shotTotal: submission.total_baskets,
+        },
+      ];
+    }) as RecentlyApprovedEntry[],
   };
 }
 
@@ -121,7 +174,7 @@ export default async function FamilyPage() {
         >
           Leaderboard
         </Link>
-        <RecentlyApprovedTable entries={MOCK_RECENTLY_APPROVED_SUBMISSIONS} />
+        <RecentlyApprovedTable entries={family.recentlyApproved} />
       </div>
     </main>
   );
