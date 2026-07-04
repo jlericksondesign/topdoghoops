@@ -24,13 +24,36 @@ type ParentInvite = {
   expires_at: string;
 };
 
-async function ensureParentProfileForInvite(invite: ParentInvite) {
+type ParentProfileResult =
+  | {
+      ok: true;
+      profileId: string;
+    }
+  | {
+      ok: false;
+      error: string;
+      profileId: null;
+    };
+
+type ActionResult =
+  | {
+      ok: true;
+    }
+  | {
+      ok: false;
+      error: string;
+    };
+
+async function ensureParentProfileForInvite(
+  invite: ParentInvite,
+): Promise<ParentProfileResult> {
   const supabase = createSupabaseAdminClient();
 
   if (!supabase) {
     return {
       ok: false,
       error: "Supabase environment variables are not available yet.",
+      profileId: null,
     };
   }
 
@@ -95,8 +118,8 @@ async function ensureParentProfileForInvite(invite: ParentInvite) {
 
 async function ensurePlayerForInvite(
   invite: ParentInvite,
-  parentProfileId: string | null,
-) {
+  parentProfileId: string,
+): Promise<ActionResult> {
   const supabase = createSupabaseAdminClient();
 
   if (!supabase) {
