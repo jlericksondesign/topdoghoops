@@ -1,5 +1,6 @@
 import { AppHeaderBar } from "@/components/app/AppHeaderBar";
 import { InviteMagicLinkButton } from "@/components/admin/InviteMagicLinkButton";
+import { SingleInviteForm } from "@/components/admin/SingleInviteForm";
 import {
   ADMIN_SESSION_COOKIE,
   isAdminSessionValid,
@@ -107,12 +108,15 @@ export default async function AdminPage() {
           </p>
         </div>
 
-        <Link
-          href="/admin/import"
-          className="inline-flex h-12 items-center justify-center rounded-xl bg-canton-green px-4 text-sm font-black uppercase tracking-wide text-white"
-        >
-          Import CSV
-        </Link>
+        <div className="grid gap-4">
+          <SingleInviteForm />
+          <Link
+            href="/admin/import"
+            className="inline-flex h-12 items-center justify-center rounded-xl bg-canton-pill px-4 text-sm font-black uppercase tracking-wide text-canton-ink"
+          >
+            Import CSV
+          </Link>
+        </div>
 
         {error ? (
           <div className="rounded-xl border-2 border-canton-orange bg-white px-4 py-4">
