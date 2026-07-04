@@ -109,7 +109,7 @@ export default async function InviteAcceptPage({
           playerName={`${invite.player_first_name} ${invite.player_last_initial}.`}
           jerseyNumber={getJerseyNumber(invite)}
           leagueLabel={formatDivision(invite.division)}
-          onAcceptHref="/family"
+          acceptToken={token}
         />
       </div>
     </main>
