@@ -20,8 +20,8 @@ async function readResendResponse(response: Response) {
 }
 
 function getRequiredEmailConfig() {
-  const apiKey = process.env.RESEND_API_KEY;
-  const from = process.env.RESEND_FROM_EMAIL;
+  const apiKey = process.env.RESEND_API_KEY?.trim().replace(/^Bearer\s+/i, "");
+  const from = process.env.RESEND_FROM_EMAIL?.trim();
 
   if (!apiKey || !from) {
     return null;
@@ -30,7 +30,7 @@ function getRequiredEmailConfig() {
   return {
     apiKey,
     from,
-    replyTo: process.env.RESEND_REPLY_TO_EMAIL,
+    replyTo: process.env.RESEND_REPLY_TO_EMAIL?.trim() || undefined,
   };
 }
 
