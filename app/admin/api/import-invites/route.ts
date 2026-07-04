@@ -1,4 +1,3 @@
-import { randomBytes, createHash } from "crypto";
 import { NextRequest, NextResponse } from "next/server";
 
 import {
@@ -6,21 +5,16 @@ import {
   isAdminSessionValid,
 } from "@/lib/admin-auth";
 import { getValidInviteRows, parseInviteCsv } from "@/lib/invite-csv";
+import {
+  createInviteToken,
+  getInviteExpirationDate,
+  hashInviteToken,
+} from "@/lib/invite-token";
 import { createSupabaseAdminClient } from "@/lib/supabase/server";
 
 type ImportBody = {
   invites?: unknown;
 };
-
-function createTokenHash() {
-  return createHash("sha256").update(randomBytes(32)).digest("hex");
-}
-
-function getExpirationDate() {
-  const expirationDate = new Date();
-  expirationDate.setDate(expirationDate.getDate() + 30);
-  return expirationDate.toISOString();
-}
 
 function stringifyInvites(invites: unknown) {
   if (!Array.isArray(invites)) {
@@ -105,10 +99,10 @@ export async function POST(request: NextRequest) {
     );
   }
 
-  const expiresAt = getExpirationDate();
+  const expiresAt = getInviteExpirationDate();
   const inserts = validRows.map((row) => ({
     ...row,
-    token_hash: createTokenHash(),
+    token_hash: hashInviteToken(createInviteToken()),
     status: "draft",
     expires_at: expiresAt,
   }));

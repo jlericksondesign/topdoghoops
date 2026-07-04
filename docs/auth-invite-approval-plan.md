@@ -19,6 +19,17 @@ Core assumptions:
 * Parent approval should be one card and one primary action.
 * Badges, streaks, and stars are placeholder-only for launch.
 * Leaderboards are simple approved basket totals for launch.
+* Invited players become active after the parent accepts the invite.
+* Parent invite emails should come from `Top Dog Hoops <hello@topdoghoops.com>`.
+
+### MVP Divisions
+
+Use these four divisions for launch:
+
+* Boys Elementary
+* Boys Middle School
+* Girls Elementary
+* Girls Middle School
 
 ---
 
@@ -69,6 +80,10 @@ Email CTA:
 
 `Join Top Dog Hoops`
 
+Email draft:
+
+`Your child has been invited to join Top Dog Hoops. Tap below to confirm your player profile and get started.`
+
 Link shape:
 
 `/invite/accept?token=...`
@@ -79,6 +94,7 @@ Expected behavior:
 * If the parent already exists, attach the invite to the existing parent.
 * Parent confirms the player profile.
 * Player becomes active.
+* Parent lands on the family dashboard.
 
 ---
 
@@ -136,6 +152,8 @@ Let a child use the app from their own device without email, password, or accoun
 5. Child opens the link on their own device.
 6. App stores a long-lived child-device session.
 7. Child lands directly in their player experience on future visits.
+
+Child setup links expire after 7 days if unused. Once opened, the child stays logged in on that device until the parent resets or revokes access.
 
 ### Child Device Permissions
 

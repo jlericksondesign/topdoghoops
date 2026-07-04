@@ -1,4 +1,5 @@
 import { AppHeaderBar } from "@/components/app/AppHeaderBar";
+import { InviteMagicLinkButton } from "@/components/admin/InviteMagicLinkButton";
 import {
   ADMIN_SESSION_COOKIE,
   isAdminSessionValid,
@@ -154,6 +155,10 @@ export default async function AdminPage() {
                       {invite.status}
                     </span>
                   </div>
+
+                  {invite.status === "accepted" ? null : (
+                    <InviteMagicLinkButton inviteId={invite.id} />
+                  )}
 
                   <div className="mt-4 grid grid-cols-2 gap-3 text-sm">
                     <div>

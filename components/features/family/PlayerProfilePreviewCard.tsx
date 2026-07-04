@@ -5,17 +5,23 @@ type PlayerProfilePreviewCardProps = {
   playerName: string;
   jerseyNumber: number;
   onAcceptHref: string;
+  leagueLabel?: string;
 };
 
 export function PlayerProfilePreviewCard({
   playerName,
   jerseyNumber,
   onAcceptHref,
+  leagueLabel,
 }: PlayerProfilePreviewCardProps) {
   return (
     <div className="w-full">
       <div className="overflow-hidden rounded-2xl bg-canton-card">
-        <PlayerIdentityRow playerName={playerName} jerseyNumber={jerseyNumber} />
+        <PlayerIdentityRow
+          playerName={playerName}
+          jerseyNumber={jerseyNumber}
+          leagueLabel={leagueLabel}
+        />
         <div className="px-5 pb-5 pt-1">
           <Link
             href={onAcceptHref}
