@@ -16,10 +16,11 @@ export function SingleInviteForm() {
 
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
+    const form = event.currentTarget;
     setStatus("saving");
     setMessage(null);
 
-    const formData = new FormData(event.currentTarget);
+    const formData = new FormData(form);
 
     try {
       const response = await fetch("/admin/api/invites", {
@@ -32,7 +33,7 @@ export function SingleInviteForm() {
         throw new Error(result.error ?? "Invite could not be created.");
       }
 
-      event.currentTarget.reset();
+      form.reset();
       setStatus("saved");
       setMessage("Draft invite created.");
       router.refresh();
