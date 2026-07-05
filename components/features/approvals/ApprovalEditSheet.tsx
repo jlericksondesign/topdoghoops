@@ -4,6 +4,7 @@ type ApprovalEditSheetProps = {
   playerName: string;
   originalTotal: number;
   editedTotal: number;
+  approveLabel?: string;
   onChange: (value: number) => void;
   onApprove: () => void;
   onCancel: () => void;
@@ -13,6 +14,7 @@ export function ApprovalEditSheet({
   playerName,
   originalTotal,
   editedTotal,
+  approveLabel,
   onChange,
   onApprove,
   onCancel,
@@ -36,7 +38,7 @@ export function ApprovalEditSheet({
           onClick={onApprove}
           className="w-full rounded-2xl border-2 border-white bg-canton-orange py-4 text-center text-base font-bold uppercase tracking-wide text-white shadow-[0_4px_0_rgba(0,0,0,0.15)]"
         >
-          Approve {editedTotal} Shots
+          {approveLabel ?? `Approve ${editedTotal} Shots`}
         </button>
         <button
           type="button"

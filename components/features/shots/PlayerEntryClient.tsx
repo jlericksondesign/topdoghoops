@@ -19,6 +19,7 @@ type PlayerEntryClientProps = {
 };
 
 type Phase = "entry" | "celebrating" | "revealed";
+type SubmitStatus = "idle" | "saving" | "error";
 
 function AnimatedShotTotal({
   from,
@@ -75,11 +76,46 @@ export function PlayerEntryClient({
   const [shotWithFriend, setShotWithFriend] = useState(false);
   const [friendName, setFriendName] = useState("");
   const [phase, setPhase] = useState<Phase>("entry");
+  const [submitStatus, setSubmitStatus] = useState<SubmitStatus>("idle");
+  const [submitError, setSubmitError] = useState<string | null>(null);
 
   const isEntry = phase === "entry";
   const isRevealed = phase === "revealed";
   const submittedTotal = score + (shotWithFriend ? 10 : 0);
   const newShotTotal = previousShotTotal + submittedTotal;
+
+  async function handleSubmit() {
+    setSubmitStatus("saving");
+    setSubmitError(null);
+
+    try {
+      const response = await fetch("/player-entry/api/submit", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          baseBaskets: score,
+          shotWithFriend,
+        }),
+      });
+      const result = (await response.json()) as { error?: string };
+
+      if (!response.ok) {
+        throw new Error(result.error ?? "Shot log could not be submitted.");
+      }
+
+      setSubmitStatus("idle");
+      setPhase("celebrating");
+    } catch (caughtError) {
+      setSubmitStatus("error");
+      setSubmitError(
+        caughtError instanceof Error
+          ? caughtError.message
+          : "Shot log could not be submitted.",
+      );
+    }
+  }
 
   return (
     <main className="flex min-h-dvh flex-col bg-canton-white-grid">
@@ -143,9 +179,15 @@ export function PlayerEntryClient({
           />
 
           <SubmitScoreButton
-            disabled={score <= 0}
-            onClick={() => setPhase("celebrating")}
+            disabled={score <= 0 || submitStatus === "saving"}
+            label={submitStatus === "saving" ? "Submitting" : "Submit"}
+            onClick={handleSubmit}
           />
+          {submitError ? (
+            <p className="text-center text-xs font-black uppercase text-canton-orange">
+              {submitError}
+            </p>
+          ) : null}
           <Link
             href="/player"
             className="text-sm uppercase tracking-wide text-canton-ink"

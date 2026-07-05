@@ -8,6 +8,7 @@ type ApprovalCardProps = {
   submittedAt: string;
   shotTotal: number;
   friendBonus: boolean;
+  approveLabel?: string;
   onApprove: () => void;
   onEdit: () => void;
 };
@@ -19,6 +20,7 @@ export function ApprovalCard({
   submittedAt,
   shotTotal,
   friendBonus,
+  approveLabel,
   onApprove,
   onEdit,
 }: ApprovalCardProps) {
@@ -48,7 +50,7 @@ export function ApprovalCard({
           onClick={onApprove}
           className="w-full rounded-2xl border-2 border-white bg-canton-orange py-4 text-center text-base font-bold uppercase tracking-wide text-white shadow-[0_4px_0_rgba(0,0,0,0.15)]"
         >
-          Approve +{shotTotal} Shots
+          {approveLabel ?? `Approve +${shotTotal} Shots`}
         </button>
         <button
           type="button"
