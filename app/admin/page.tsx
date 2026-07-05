@@ -19,7 +19,6 @@ type ParentInvite = {
   player_first_name: string;
   player_last_initial: string;
   grade: number;
-  gender: string;
   division: string;
   status: string;
   expires_at: string;
@@ -54,7 +53,7 @@ async function getParentInvites() {
   const { data, error } = await supabase
     .from("parent_invites")
     .select(
-      "id,parent_email,parent_name,player_first_name,player_last_initial,grade,gender,division,status,expires_at,created_at",
+      "id,parent_email,parent_name,player_first_name,player_last_initial,grade,division,status,expires_at,created_at",
     )
     .order("created_at", { ascending: false });
 
@@ -179,14 +178,6 @@ export default async function AdminPage() {
                       </p>
                       <p className="mt-1 font-bold text-canton-ink">
                         {invite.grade}
-                      </p>
-                    </div>
-                    <div>
-                      <p className="text-xs font-black uppercase tracking-widest text-canton-muted">
-                        Gender
-                      </p>
-                      <p className="mt-1 font-bold capitalize text-canton-ink">
-                        {invite.gender}
                       </p>
                     </div>
                     <div>

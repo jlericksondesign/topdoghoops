@@ -3,6 +3,7 @@ import { FamilySummaryCard } from "@/components/features/family/FamilySummaryCar
 import { PlayerProfilePreviewCard } from "@/components/features/family/PlayerProfilePreviewCard";
 import { hashInviteToken } from "@/lib/invite-token";
 import { createSupabaseAdminClient } from "@/lib/supabase/server";
+import Link from "next/link";
 
 export const dynamic = "force-dynamic";
 
@@ -80,6 +81,20 @@ function InviteUnavailable() {
           <p className="mt-3 text-sm font-semibold leading-6 text-canton-muted">
             This invite link is missing, expired, or no longer active.
           </p>
+          <div className="mt-5 grid gap-3">
+            <Link
+              href="/parent/link-request"
+              className="rounded-2xl bg-canton-green px-4 py-3 text-sm font-black uppercase tracking-wide text-white"
+            >
+              Parent Sign In
+            </Link>
+            <Link
+              href="/"
+              className="rounded-2xl bg-canton-pill px-4 py-3 text-sm font-black uppercase tracking-wide text-canton-ink"
+            >
+              Back Home
+            </Link>
+          </div>
         </div>
       </div>
     </main>

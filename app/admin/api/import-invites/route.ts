@@ -4,7 +4,11 @@ import {
   ADMIN_SESSION_COOKIE,
   isAdminSessionValid,
 } from "@/lib/admin-auth";
-import { getValidInviteRows, parseInviteCsv } from "@/lib/invite-csv";
+import {
+  deriveGenderFromDivision,
+  getValidInviteRows,
+  parseInviteCsv,
+} from "@/lib/invite-csv";
 import {
   createInviteToken,
   getInviteExpirationDate,
@@ -48,7 +52,6 @@ function stringifyInvites(invites: unknown) {
       record.player_first_name,
       record.player_last_initial,
       record.grade,
-      record.gender,
       record.division,
     ]
       .map(formatCsvCell)
@@ -56,7 +59,7 @@ function stringifyInvites(invites: unknown) {
   });
 
   return [
-    "parent_email,parent_name,player_first_name,player_last_initial,grade,gender,division",
+    "parent_email,parent_name,player_first_name,player_last_initial,grade,division",
     ...rows,
   ].join("\n");
 }
@@ -102,6 +105,7 @@ export async function POST(request: NextRequest) {
   const expiresAt = getInviteExpirationDate();
   const inserts = validRows.map((row) => ({
     ...row,
+    gender: deriveGenderFromDivision(row.division),
     token_hash: hashInviteToken(createInviteToken()),
     status: "draft",
     expires_at: expiresAt,

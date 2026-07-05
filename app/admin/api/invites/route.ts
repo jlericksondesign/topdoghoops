@@ -4,7 +4,11 @@ import {
   ADMIN_SESSION_COOKIE,
   isAdminSessionValid,
 } from "@/lib/admin-auth";
-import { getValidInviteRows, parseInviteCsv } from "@/lib/invite-csv";
+import {
+  deriveGenderFromDivision,
+  getValidInviteRows,
+  parseInviteCsv,
+} from "@/lib/invite-csv";
 import {
   createInviteToken,
   getInviteExpirationDate,
@@ -37,14 +41,13 @@ export async function POST(request: NextRequest) {
 
   const formData = await request.formData();
   const csvText = [
-    "parent_email,parent_name,player_first_name,player_last_initial,grade,gender,division",
+    "parent_email,parent_name,player_first_name,player_last_initial,grade,division",
     [
       formData.get("parent_email"),
       formData.get("parent_name"),
       formData.get("player_first_name"),
       formData.get("player_last_initial"),
       formData.get("grade"),
-      formData.get("gender"),
       formData.get("division"),
     ]
       .map((value) => `"${csvCell(value)}"`)
@@ -68,6 +71,7 @@ export async function POST(request: NextRequest) {
   const [invite] = validRows;
   const { error } = await supabase.from("parent_invites").insert({
     ...invite,
+    gender: deriveGenderFromDivision(invite.division),
     token_hash: hashInviteToken(createInviteToken()),
     status: "draft",
     expires_at: getInviteExpirationDate(),

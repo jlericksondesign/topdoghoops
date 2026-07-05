@@ -17,7 +17,105 @@ How to use:
 
 ## Open
 
-_No open QA items from the July 3 demo pass._
+### 1. Magic link button does not work
+
+* Screen: `/parent/link-request`
+* Device: Browser / live or local QA
+* Issue: The magic link CTA does not appear to complete the expected sign-in link flow.
+* Expected: Tapping the magic link button should send or simulate sending the parent sign-in link, then show a clear confirmation or next step.
+* Priority: High
+* Screenshot: Manual QA note from July 5, 2026
+* Status: Open
+
+### 2. Homepage buttons should be Parent Sign In and Kid Sign In
+
+* Screen: `/`
+* Device: Browser / live or local QA
+* Issue: The buttons on `topdoghoops.com` do not clearly match the updated parent and child sign-in entry points.
+* Expected: Use two simple homepage CTAs: `Parent Sign In` and `Kid Sign In`.
+* Priority: High
+* Screenshot: Manual QA note from July 5, 2026
+* Status: Open
+
+### 3. Accept invite page shows link not created state without guidance
+
+* Screen: `/invite/accept`
+* Device: Browser / live or local QA
+* Issue: The accept invite link flow shows a `link not created` state, which does not explain what the parent is supposed to do next.
+* Expected: The accept invite page should either complete the invite acceptance path or show clear recovery guidance, such as requesting a new invite or contacting the league/admin.
+* Priority: High
+* Screenshot: Manual QA note from July 5, 2026
+* Status: Open
+
+### 4. Define what happens when a child visits topdoghoops.com
+
+* Screen: `/`
+* Device: Browser / live or local QA
+* Issue: The current homepage flow does not define the child experience if a child directly visits `topdoghoops.com` instead of using a paired-device link.
+* Expected: `Kid Sign In` should provide the child-safe path from the public homepage, such as prompting for a pairing code, explaining that a parent must set up the device, or routing paired devices to the player dashboard.
+* Priority: High
+* Screenshot: Manual QA note from July 5, 2026
+* Status: Open
+
+### 5. Homepage headline spacing and font size need mobile fit pass
+
+* Screen: `/`
+* Device: Mobile / 360px minimum supported width
+* Issue: The homepage has too much margin above the headline, and the headline sizing can cause `Top Dog` to break across lines on the smallest supported width.
+* Expected: Reduce the top margin above the headline and resize the headline so `Top Dog` stays on one line at 360px width.
+* Priority: Medium
+* Screenshot: Manual QA note from July 5, 2026
+* Status: Open
+
+### 6. Add hamburger navigation for key surfaces
+
+* Screen: Global app shell
+* Device: Mobile / browser
+* Issue: Key demo surfaces are hard to reach without direct URLs or deep links.
+* Expected: Add a hamburger nav with role-aware top-level links. Parent links: `Dashboard`, `Shot Approvals`, `Leaderboard`, `Contact`. Player links: `Dashboard`, `Shot Log`, `Leaderboard`.
+* Priority: Medium
+* Screenshot: Manual QA note from July 5, 2026
+* Status: Open
+
+### 7. Admin invite status should progress from draft to sent to accepted
+
+* Screen: `/admin`, invite management flow
+* Device: Browser / live or local QA
+* Issue: Manual email invites need a visible lifecycle so admins know whether an invite is drafted, sent, or accepted.
+* Expected: After an admin sends a manual email invite, update the invite status from `draft` to `sent`; when the parent accepts, update the status to `accepted`.
+* Priority: High
+* Screenshot: Manual QA note from July 5, 2026
+* Status: Open
+
+### 8. Add single invite should open a modal form
+
+* Screen: `/admin`, invite management flow
+* Device: Browser / live or local QA
+* Issue: `Add single invite` should behave like an action rather than exposing a form inline by default.
+* Expected: Make `Add single invite` a button that opens the invite form in a modal.
+* Priority: Medium
+* Screenshot: Manual QA note from July 5, 2026
+* Status: Open
+
+### 9. Remove gender field
+
+* Screen: Admin/player/invite profile forms
+* Device: Browser / live or local QA
+* Issue: The flow should not collect or display gender.
+* Expected: Remove gender from relevant forms, mock data, display surfaces, and any required validation.
+* Priority: Medium
+* Screenshot: Manual QA note from July 5, 2026
+* Status: Open
+
+### 10. Add rules access and first-visit disclosure modals
+
+* Screen: `/player-entry`, `/parent-approval`, global navigation
+* Device: Mobile / browser
+* Issue: Rules are not easy to find, and users are not shown a first-visit disclosure before using the shot log or shot approval log.
+* Expected: Add an easy-to-find rules surface and show a modal disclosure on first visit to the shot log and shot approval log. Users must explicitly tap `Agree` before proceeding.
+* Priority: High
+* Screenshot: Manual QA note from July 5, 2026
+* Status: Open
 
 ---
 

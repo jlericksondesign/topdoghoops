@@ -3,6 +3,7 @@
 import { useState } from "react";
 import Link from "next/link";
 import { AppHeaderBar } from "@/components/app/AppHeaderBar";
+import { FirstVisitDisclosure } from "@/components/app/FirstVisitDisclosure";
 import { ArcadeScoreDisplay } from "@/components/features/shots/ArcadeScoreDisplay";
 import { BasketballGraphic } from "@/components/features/shots/BasketballGraphic";
 import { ScoreIncrementGrid } from "@/components/features/shots/ScoreIncrementGrid";
@@ -27,6 +28,13 @@ export default function PlayerEntryPage() {
   return (
     <main className="flex min-h-dvh flex-col bg-canton-white-grid">
       <AppHeaderBar dashboardHref="/player" />
+      <FirstVisitDisclosure
+        storageKey="topdog-player-entry-rules"
+        title="Shot Log Rules"
+      >
+        Log honest made shots only. Use the friend bonus only when you practiced
+        with someone. A parent must approve shots before they count publicly.
+      </FirstVisitDisclosure>
 
       <div className="flex flex-col items-center gap-6 px-10 pb-6 pt-8">
         <div

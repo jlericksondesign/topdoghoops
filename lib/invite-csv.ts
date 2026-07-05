@@ -4,7 +4,6 @@ export type InviteCsvInput = {
   player_first_name: string;
   player_last_initial: string;
   grade: number;
-  gender: "boy" | "girl";
   division:
     | "boys_elementary"
     | "boys_middle_school"
@@ -25,15 +24,13 @@ export const INVITE_CSV_HEADERS = [
   "player_first_name",
   "player_last_initial",
   "grade",
-  "gender",
   "division",
 ] as const;
 
 export const INVITE_CSV_TEMPLATE = `${INVITE_CSV_HEADERS.join(",")}
-parent@example.com,Test Parent,Maceo,23,5,boy,boys_elementary
+parent@example.com,Test Parent,Maceo,23,5,boys_elementary
 `;
 
-const validGenders = ["boy", "girl"];
 const validDivisions = [
   "boys_elementary",
   "boys_middle_school",
@@ -90,22 +87,14 @@ function isEmail(value: string) {
   return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value);
 }
 
-function normalizeGender(value: string) {
-  const normalizedValue = value.trim().toLowerCase();
-
-  if (normalizedValue === "boys" || normalizedValue === "male") {
-    return "boy";
-  }
-
-  if (normalizedValue === "girls" || normalizedValue === "female") {
-    return "girl";
-  }
-
-  return normalizedValue;
-}
-
 function normalizeDivision(value: string) {
   return value.trim().toLowerCase().replaceAll(" ", "_").replaceAll("-", "_");
+}
+
+export function deriveGenderFromDivision(
+  division: InviteCsvInput["division"],
+) {
+  return division.startsWith("girls_") ? "girl" : "boy";
 }
 
 function validateRow(
@@ -118,7 +107,6 @@ function validateRow(
   const playerFirstName = values.player_first_name?.trim() ?? "";
   const playerLastInitial = values.player_last_initial?.trim() ?? "";
   const gradeValue = values.grade?.trim() ?? "";
-  const gender = normalizeGender(values.gender ?? "");
   const division = normalizeDivision(values.division ?? "");
   const grade = Number.parseInt(gradeValue, 10);
 
@@ -138,10 +126,6 @@ function validateRow(
     errors.push("Grade must be a number from 1 to 12.");
   }
 
-  if (!validGenders.includes(gender)) {
-    errors.push("Gender must be boy or girl.");
-  }
-
   if (!validDivisions.includes(division)) {
     errors.push("Division is not recognized.");
   }
@@ -157,7 +141,6 @@ function validateRow(
             player_first_name: playerFirstName,
             player_last_initial: playerLastInitial.slice(0, 3),
             grade,
-            gender: gender as InviteCsvInput["gender"],
             division: division as InviteCsvInput["division"],
           }
         : null,
