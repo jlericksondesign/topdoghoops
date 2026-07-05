@@ -4,7 +4,7 @@ import { MagicLinkRequestForm } from "@/components/features/auth/MagicLinkReques
 export default function ParentLinkRequestPage() {
   return (
     <main className="flex min-h-dvh flex-col bg-canton-cream-grid">
-      <AppHeaderBar />
+      <AppHeaderBar dashboardHref="/family" />
       <div className="flex flex-1 flex-col px-10 pb-10 pt-12">
         <MagicLinkRequestForm />
       </div>

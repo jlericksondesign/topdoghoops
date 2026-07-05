@@ -13,7 +13,7 @@ export function FriendBonusToggle({
 }: FriendBonusToggleProps) {
   return (
     <div className="flex w-full flex-col gap-3">
-      <label className="flex items-center gap-3 text-sm text-canton-ink">
+      <label className="flex items-center gap-3 text-base text-canton-ink">
         <input
           type="checkbox"
           checked={checked}
@@ -24,7 +24,7 @@ export function FriendBonusToggle({
               onFriendNameChange("");
             }
           }}
-          className="h-5 w-5 accent-canton-green"
+          className="h-7 w-7 shrink-0 accent-canton-green"
         />
         Check if you played with a friend
       </label>

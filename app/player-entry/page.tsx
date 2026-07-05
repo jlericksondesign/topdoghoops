@@ -1,125 +1,80 @@
-"use client";
+import { cookies } from "next/headers";
 
-import { useState } from "react";
-import Link from "next/link";
-import { AppHeaderBar } from "@/components/app/AppHeaderBar";
-import { FirstVisitDisclosure } from "@/components/app/FirstVisitDisclosure";
-import { ArcadeScoreDisplay } from "@/components/features/shots/ArcadeScoreDisplay";
-import { BasketballGraphic } from "@/components/features/shots/BasketballGraphic";
-import { ScoreIncrementGrid } from "@/components/features/shots/ScoreIncrementGrid";
-import { FriendBonusToggle } from "@/components/features/shots/FriendBonusToggle";
-import { SubmitScoreButton } from "@/components/features/shots/SubmitScoreButton";
-import { MascotRevealBadge } from "@/components/features/rewards/MascotRevealBadge";
+import { PlayerEntryClient } from "@/components/features/shots/PlayerEntryClient";
+import { PARENT_INVITE_SESSION_COOKIE } from "@/lib/parent-session";
+import { createSupabaseAdminClient } from "@/lib/supabase/server";
 
-const MOCK_PLAYER_NAME = "Marcus Johnson";
-const MOCK_PLAYER_FIRST_NAME = "Marcus";
+export const dynamic = "force-dynamic";
 
-type Phase = "entry" | "celebrating" | "revealed";
+type PlayerEntryPageProps = {
+  searchParams: Promise<{
+    playerName?: string;
+  }>;
+};
 
-export default function PlayerEntryPage() {
-  const [score, setScore] = useState(0);
-  const [shotWithFriend, setShotWithFriend] = useState(false);
-  const [friendName, setFriendName] = useState("");
-  const [phase, setPhase] = useState<Phase>("entry");
+type PlayerEntryData = {
+  playerFirstName: string;
+  playerName: string;
+  previousShotTotal: number;
+};
 
-  const isEntry = phase === "entry";
-  const isRevealed = phase === "revealed";
+function getFirstName(playerName: string) {
+  return playerName.trim().split(/\s+/)[0] || "Player";
+}
 
-  return (
-    <main className="flex min-h-dvh flex-col bg-canton-white-grid">
-      <AppHeaderBar dashboardHref="/player" />
-      <FirstVisitDisclosure
-        storageKey="topdog-player-entry-rules"
-        title="Shot Log Rules"
-      >
-        Log honest made shots only. Use the friend bonus only when you practiced
-        with someone. A parent must approve shots before they count publicly.
-      </FirstVisitDisclosure>
+async function getPlayerEntryData(
+  playerNameOverride?: string,
+): Promise<PlayerEntryData> {
+  const fallbackPlayerName = playerNameOverride?.trim() || "Player";
+  const fallback = {
+    playerFirstName: getFirstName(fallbackPlayerName),
+    playerName: fallbackPlayerName,
+    previousShotTotal: 0,
+  };
+  const cookieStore = await cookies();
+  const inviteId = cookieStore.get(PARENT_INVITE_SESSION_COOKIE)?.value;
+  const supabase = createSupabaseAdminClient();
 
-      <div className="flex flex-col items-center gap-6 px-10 pb-6 pt-8">
-        <div
-          className={`w-full transition-opacity duration-500 ${
-            isEntry ? "opacity-100" : "opacity-0"
-          }`}
-        >
-          <ArcadeScoreDisplay
-            playerName={MOCK_PLAYER_NAME}
-            value={score}
-            padded={!isEntry}
-          />
-        </div>
+  if (!inviteId || !supabase) {
+    return fallback;
+  }
 
-        <div className="flex h-96 w-96 items-center justify-center">
-          {!isRevealed ? (
-            <BasketballGraphic
-              className={
-                phase === "celebrating" ? "ball-bounce h-24 w-24" : "h-24 w-24"
-              }
-              onAnimationEnd={
-                phase === "celebrating"
-                  ? () => setPhase("revealed")
-                  : undefined
-              }
-            />
-          ) : (
-            <MascotRevealBadge />
-          )}
-        </div>
+  const { data: players } = await supabase
+    .from("players")
+    .select("id,first_name,last_initial")
+    .eq("invite_id", inviteId)
+    .eq("is_active", true)
+    .order("created_at", { ascending: true })
+    .limit(1);
+  const player = players?.[0];
 
-        <div
-          className={`w-full transition-opacity duration-500 ${
-            isEntry ? "opacity-100" : "opacity-0"
-          }`}
-        >
-          <ScoreIncrementGrid value={score} onChange={setScore} />
-        </div>
-      </div>
+  if (!player) {
+    return fallback;
+  }
 
-      <div className="relative flex-1 bg-canton-tan">
-        <div
-          className={`absolute inset-0 flex flex-col items-center gap-6 px-10 pb-8 pt-8 transition-opacity duration-500 ${
-            isEntry ? "opacity-100" : "pointer-events-none opacity-0"
-          }`}
-        >
-          <FriendBonusToggle
-            checked={shotWithFriend}
-            onCheckedChange={setShotWithFriend}
-            friendName={friendName}
-            onFriendNameChange={setFriendName}
-          />
-
-          <div className="flex-1" />
-
-          <SubmitScoreButton
-            disabled={score <= 0}
-            onClick={() => setPhase("celebrating")}
-          />
-          <Link
-            href="/player"
-            className="text-sm uppercase tracking-wide text-canton-muted"
-          >
-            &larr; Back
-          </Link>
-        </div>
-
-        <div
-          className={`absolute inset-0 flex flex-col items-center justify-center gap-6 px-10 transition-opacity duration-500 ${
-            isRevealed ? "opacity-100" : "pointer-events-none opacity-0"
-          }`}
-        >
-          <h1 className="text-center font-heading text-3xl font-black uppercase leading-tight text-canton-ink">
-            Let&apos;s Go,
-            <br />
-            {MOCK_PLAYER_FIRST_NAME}!
-          </h1>
-          <Link
-            href="/leaderboards?from=player"
-            className="w-full rounded-2xl border-2 border-white bg-canton-orange py-4 text-center text-base font-bold uppercase tracking-wide text-white shadow-[0_4px_0_rgba(0,0,0,0.15)]"
-          >
-            Leaderboard
-          </Link>
-        </div>
-      </div>
-    </main>
+  const { data: approvedSubmissions } = await supabase
+    .from("shot_submissions")
+    .select("total_baskets")
+    .eq("player_id", player.id)
+    .eq("status", "approved");
+  const previousShotTotal = (approvedSubmissions ?? []).reduce(
+    (total, submission) => total + (submission.total_baskets ?? 0),
+    0,
   );
+  const playerName = `${player.first_name} ${player.last_initial}.`;
+
+  return {
+    playerFirstName: player.first_name,
+    playerName,
+    previousShotTotal,
+  };
+}
+
+export default async function PlayerEntryPage({
+  searchParams,
+}: PlayerEntryPageProps) {
+  const { playerName } = await searchParams;
+  const playerEntryData = await getPlayerEntryData(playerName);
+
+  return <PlayerEntryClient {...playerEntryData} />;
 }

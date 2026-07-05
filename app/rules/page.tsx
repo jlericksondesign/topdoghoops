@@ -5,7 +5,7 @@ import { AppHeaderBar } from "@/components/app/AppHeaderBar";
 export default function RulesPage() {
   return (
     <main className="flex min-h-dvh flex-col bg-canton-cream-grid">
-      <AppHeaderBar />
+      <AppHeaderBar dashboardHref="/player" />
       <div className="flex flex-1 flex-col gap-6 px-8 pb-10 pt-10">
         <div>
           <p className="text-xs font-black uppercase tracking-[0.2em] text-canton-green">
@@ -25,12 +25,20 @@ export default function RulesPage() {
           </ul>
         </section>
 
-        <Link
-          href="/"
-          className="text-center text-sm font-bold uppercase tracking-wide text-canton-ink underline underline-offset-4"
-        >
-          Back Home
-        </Link>
+        <div className="grid gap-3">
+          <Link
+            href="/player"
+            className="rounded-2xl bg-canton-green px-4 py-3 text-center text-sm font-black uppercase tracking-wide text-white"
+          >
+            Player Dashboard
+          </Link>
+          <Link
+            href="/family"
+            className="rounded-2xl bg-canton-pill px-4 py-3 text-center text-sm font-black uppercase tracking-wide text-canton-ink"
+          >
+            Parent Dashboard
+          </Link>
+        </div>
       </div>
     </main>
   );

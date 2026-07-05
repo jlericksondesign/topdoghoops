@@ -18,7 +18,7 @@ export function ScoreIncrementButton({
       type="button"
       onClick={onClick}
       disabled={disabled}
-      className="flex h-20 w-20 items-center justify-center rounded-xl bg-canton-green text-white disabled:opacity-40"
+      className="flex h-[88px] w-[88px] items-center justify-center rounded-none border-2 border-canton-ink bg-canton-green text-white"
       {...rest}
     >
       {children}

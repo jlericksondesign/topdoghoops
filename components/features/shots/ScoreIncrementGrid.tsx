@@ -14,13 +14,13 @@ export function ScoreIncrementGrid({ value, onChange }: ScoreIncrementGridProps)
         disabled={value <= 0}
         onClick={() => onChange(Math.max(0, value - 1))}
       >
-        <Minus className="h-8 w-8" aria-hidden />
+        <Minus className="h-11 w-11 stroke-[4]" aria-hidden />
       </ScoreIncrementButton>
       <ScoreIncrementButton
         aria-label="Add one shot"
         onClick={() => onChange(value + 1)}
       >
-        <Plus className="h-8 w-8" aria-hidden />
+        <Plus className="h-11 w-11 stroke-[4]" aria-hidden />
       </ScoreIncrementButton>
     </div>
   );

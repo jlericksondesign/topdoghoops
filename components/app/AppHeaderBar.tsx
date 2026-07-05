@@ -8,7 +8,7 @@ type AppHeaderBarProps = {
   dashboardHref?: string;
 };
 
-export function AppHeaderBar({ dashboardHref = "/" }: AppHeaderBarProps) {
+export function AppHeaderBar({ dashboardHref = "/family" }: AppHeaderBarProps) {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   return (

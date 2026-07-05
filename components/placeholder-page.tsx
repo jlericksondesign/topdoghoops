@@ -12,9 +12,9 @@ export function PlaceholderPage({ title, description }: PlaceholderPageProps) {
     <main className="min-h-dvh bg-background px-4 py-6">
       <section className="mx-auto flex w-full max-w-md flex-col gap-5">
         <Button asChild variant="ghost" className="w-fit px-2">
-          <Link href="/">
+          <Link href="/player">
             <ArrowLeft className="mr-2 h-4 w-4" />
-            Home
+            Player Dashboard
           </Link>
         </Button>
 

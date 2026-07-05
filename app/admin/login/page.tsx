@@ -13,7 +13,7 @@ export default async function AdminLoginPage({
 
   return (
     <main className="flex min-h-dvh flex-col bg-canton-cream-grid">
-      <AppHeaderBar dashboardHref="/" />
+      <AppHeaderBar dashboardHref="/admin/login" />
       <div className="flex flex-1 flex-col justify-center px-6 py-10">
         <section className="rounded-2xl border-2 border-canton-ink bg-white px-5 py-6 shadow-[0_5px_0_#241000]">
           <p className="text-xs font-black uppercase tracking-[0.2em] text-canton-green">

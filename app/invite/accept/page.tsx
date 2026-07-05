@@ -89,10 +89,10 @@ function InviteUnavailable() {
               Parent Sign In
             </Link>
             <Link
-              href="/"
+              href="/family"
               className="rounded-2xl bg-canton-pill px-4 py-3 text-sm font-black uppercase tracking-wide text-canton-ink"
             >
-              Back Home
+              Parent Dashboard
             </Link>
           </div>
         </div>
@@ -117,7 +117,7 @@ export default async function InviteAcceptPage({
 
   return (
     <main className="flex min-h-dvh flex-col bg-canton-cream-grid">
-      <AppHeaderBar />
+      <AppHeaderBar dashboardHref="/family" />
       <div className="flex flex-1 flex-col items-center gap-16 px-10 pb-10 pt-12">
         <FamilySummaryCard parentEmail={invite.parent_email} />
         <PlayerProfilePreviewCard

@@ -140,10 +140,10 @@ export default async function FamilyPage() {
               activate this dashboard.
             </p>
             <Link
-              href="/"
+              href="/parent/link-request"
               className="mt-5 inline-flex h-12 items-center justify-center rounded-xl bg-canton-green px-5 text-sm font-black uppercase tracking-wide text-white"
             >
-              Back Home
+              Parent Sign In
             </Link>
           </div>
         </div>

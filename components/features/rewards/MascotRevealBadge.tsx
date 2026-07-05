@@ -1,6 +1,10 @@
 import Image from "next/image";
 
-export function MascotRevealBadge() {
+type MascotRevealBadgeProps = {
+  className?: string;
+};
+
+export function MascotRevealBadge({ className }: MascotRevealBadgeProps) {
   return (
     <Image
       src="/bulldog-mascot.png"
@@ -8,7 +12,7 @@ export function MascotRevealBadge() {
       width={600}
       height={590}
       priority
-      className="mascot-pop-in h-96 w-96 object-contain"
+      className={`mascot-pop-in object-contain ${className ?? "h-56 w-56"}`}
     />
   );
 }

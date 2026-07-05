@@ -66,10 +66,10 @@ export function MagicLinkRequestForm() {
         {isSent ? "Send Another Link" : "Send Magic Link"}
       </button>
       <Link
-        href="/"
+        href="/family"
         className="text-sm uppercase tracking-wide text-canton-muted"
       >
-        &larr; Back
+        &larr; Parent Dashboard
       </Link>
     </form>
   );

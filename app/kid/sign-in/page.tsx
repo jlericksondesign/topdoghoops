@@ -5,7 +5,7 @@ import { AppHeaderBar } from "@/components/app/AppHeaderBar";
 export default function KidSignInPage() {
   return (
     <main className="flex min-h-dvh flex-col bg-canton-cream-grid">
-      <AppHeaderBar />
+      <AppHeaderBar dashboardHref="/player" />
       <div className="flex flex-1 flex-col justify-center px-8 pb-10 pt-12">
         <div className="rounded-2xl border-2 border-canton-ink bg-white px-5 py-6 text-center">
           <p className="text-xs font-black uppercase tracking-[0.2em] text-canton-green">
@@ -26,10 +26,10 @@ export default function KidSignInPage() {
               Parent Set Up Device
             </Link>
             <Link
-              href="/"
+              href="/player"
               className="rounded-2xl bg-canton-pill px-4 py-3 text-sm font-black uppercase tracking-wide text-canton-ink"
             >
-              Back Home
+              Player Dashboard
             </Link>
           </div>
         </div>
