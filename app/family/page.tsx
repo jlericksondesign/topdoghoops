@@ -82,22 +82,38 @@ async function getFamily() {
 
   const typedPlayers = players as Player[];
   const playerIds = typedPlayers.map((player) => player.id);
-  const { data: approvedSubmissions } = await supabase
-    .from("shot_submissions")
-    .select("player_id,submission_date,total_baskets,approved_at")
-    .in("player_id", playerIds)
-    .eq("status", "approved")
-    .order("approved_at", { ascending: false })
-    .limit(5);
+  const [{ data: approvedSubmissions }, { data: pendingSubmissions }] =
+    await Promise.all([
+      supabase
+        .from("shot_submissions")
+        .select("player_id,submission_date,total_baskets,approved_at")
+        .in("player_id", playerIds)
+        .eq("status", "approved")
+        .order("approved_at", { ascending: false })
+        .limit(5),
+      supabase
+        .from("shot_submissions")
+        .select("player_id")
+        .in("player_id", playerIds)
+        .eq("status", "pending"),
+    ]);
   const playerNameById = new Map(
     typedPlayers.map((player) => [
       player.id,
       `${player.first_name} ${player.last_initial}.`,
     ]),
   );
+  const pendingApprovalCountByPlayerId = (pendingSubmissions ?? []).reduce<
+    Record<string, number>
+  >((counts, submission) => {
+    counts[submission.player_id] = (counts[submission.player_id] ?? 0) + 1;
+    return counts;
+  }, {});
 
   return {
     invite: invite as ParentInvite,
+    pendingApprovalCount: pendingSubmissions?.length ?? 0,
+    pendingApprovalCountByPlayerId,
     players: typedPlayers,
     recentlyApproved: (approvedSubmissions ?? []).flatMap((submission) => {
       const playerName = playerNameById.get(submission.player_id);
@@ -120,7 +136,6 @@ async function getFamily() {
 }
 
 export default async function FamilyPage() {
-  const pendingApprovalCount = 0;
   const family = await getFamily();
 
   if (!family) {
@@ -157,7 +172,7 @@ export default async function FamilyPage() {
       <div className="flex flex-1 flex-col items-center gap-6 px-10 pb-10 pt-12">
         <FamilySummaryCard
           parentEmail={family.invite.parent_email}
-          pendingApprovalCount={pendingApprovalCount}
+          pendingApprovalCount={family.pendingApprovalCount}
         />
         {family.players.map((player) => (
           <PlayerCard
@@ -165,7 +180,9 @@ export default async function FamilyPage() {
             playerId={player.id}
             playerName={`${player.first_name} ${player.last_initial}.`}
             jerseyNumber={getJerseyNumber(player)}
-            pendingApprovalCount={pendingApprovalCount}
+            pendingApprovalCount={
+              family.pendingApprovalCountByPlayerId[player.id] ?? 0
+            }
           />
         ))}
         <Link

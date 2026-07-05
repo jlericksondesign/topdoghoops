@@ -1,65 +1,74 @@
-"use client";
-
-import { Suspense, useState } from "react";
 import Link from "next/link";
-import { useSearchParams } from "next/navigation";
+
 import { AppHeaderBar } from "@/components/app/AppHeaderBar";
-import { LeaderboardCard } from "@/components/features/leaderboards/LeaderboardCard";
+import {
+  LeaderboardsClient,
+  type LeaderboardEntry,
+} from "@/components/features/leaderboards/LeaderboardsClient";
+import { createSupabaseAdminClient } from "@/lib/supabase/server";
 
-const MOCK_ENTRIES = [
-  { playerName: "Marcus Johnson", score: 47 },
-  { playerName: "Ava Thompson", score: 42 },
-  { playerName: "Jackson Reed", score: 39 },
-  { playerName: "Mia Carter", score: 35 },
-  { playerName: "Liam Brooks", score: 31 },
-  { playerName: "Sophia Diaz", score: 28 },
-  { playerName: "Noah Bennett", score: 24 },
-  { playerName: "Ella Foster", score: 19 },
-  { playerName: "Owen Hayes", score: 15 },
-  { playerName: "Grace Nolan", score: 11 },
-];
+export const dynamic = "force-dynamic";
 
-function BackToDashboardLink() {
-  const searchParams = useSearchParams();
-  const isParent = searchParams.get("from") === "parent";
+type LeaderboardsPageProps = {
+  searchParams: Promise<{
+    from?: string;
+  }>;
+};
 
-  return (
-    <Link
-      href={isParent ? "/family" : "/player"}
-      className="text-sm font-bold uppercase tracking-wide text-canton-ink underline underline-offset-4"
-    >
-      {isParent ? "Back to Parent Dashboard" : "Back to My Dashboard"}
-    </Link>
-  );
+async function getLeaderboardEntries(): Promise<LeaderboardEntry[]> {
+  const supabase = createSupabaseAdminClient();
+
+  if (!supabase) {
+    return [];
+  }
+
+  const { data: activeChallenge } = await supabase
+    .from("challenges")
+    .select("id")
+    .eq("is_active", true)
+    .order("created_at", { ascending: false })
+    .limit(1)
+    .single();
+
+  if (!activeChallenge) {
+    return [];
+  }
+
+  const { data } = await supabase
+    .from("leaderboard_challenge_totals")
+    .select("player_display_name,division,approved_baskets_total")
+    .eq("challenge_id", activeChallenge.id)
+    .order("overall_rank", { ascending: true })
+    .limit(100);
+
+  return (data ?? []).map((entry) => ({
+    division: entry.division,
+    playerName: entry.player_display_name,
+    score: entry.approved_baskets_total,
+  }));
 }
 
-function DashboardHeader() {
-  const searchParams = useSearchParams();
-  const isParent = searchParams.get("from") === "parent";
-
-  return <AppHeaderBar dashboardHref={isParent ? "/family" : "/player"} />;
-}
-
-export default function LeaderboardsPage() {
-  const [division, setDivision] = useState("Overall");
+export default async function LeaderboardsPage({
+  searchParams,
+}: LeaderboardsPageProps) {
+  const { from } = await searchParams;
+  const isParent = from === "parent";
+  const entries = await getLeaderboardEntries();
 
   return (
     <main className="flex min-h-dvh flex-col bg-canton-cream-grid">
-      <Suspense fallback={<AppHeaderBar dashboardHref="/player" />}>
-        <DashboardHeader />
-      </Suspense>
+      <AppHeaderBar dashboardHref={isParent ? "/family" : "/player"} />
       <div className="flex flex-1 flex-col items-center gap-6 px-10 pb-10 pt-10">
         <h1 className="text-center font-heading text-3xl font-black uppercase text-canton-ink">
           Leaderboard
         </h1>
-        <LeaderboardCard
-          division={division}
-          onDivisionChange={setDivision}
-          entries={MOCK_ENTRIES}
-        />
-        <Suspense fallback={null}>
-          <BackToDashboardLink />
-        </Suspense>
+        <LeaderboardsClient entries={entries} />
+        <Link
+          href={isParent ? "/family" : "/player"}
+          className="text-sm font-bold uppercase tracking-wide text-canton-ink underline underline-offset-4"
+        >
+          {isParent ? "Back to Parent Dashboard" : "Back to My Dashboard"}
+        </Link>
       </div>
     </main>
   );

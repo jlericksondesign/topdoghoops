@@ -1,11 +1,15 @@
 import { ShieldCheck } from "lucide-react";
 
 type ChildDeviceSetupCardProps = {
+  error?: string | null;
+  isGenerating?: boolean;
   playerName: string;
   onGenerate: () => void;
 };
 
 export function ChildDeviceSetupCard({
+  error,
+  isGenerating = false,
   playerName,
   onGenerate,
 }: ChildDeviceSetupCardProps) {
@@ -34,10 +38,16 @@ export function ChildDeviceSetupCard({
       <button
         type="button"
         onClick={onGenerate}
+        disabled={isGenerating}
         className="w-full rounded-2xl bg-canton-green py-4 text-center text-base font-bold uppercase tracking-wide text-white"
       >
-        Generate Link
+        {isGenerating ? "Generating" : "Generate Link"}
       </button>
+      {error ? (
+        <p className="text-center text-xs font-black uppercase text-canton-orange">
+          {error}
+        </p>
+      ) : null}
     </div>
   );
 }

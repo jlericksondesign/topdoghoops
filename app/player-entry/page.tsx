@@ -1,6 +1,7 @@
 import { cookies } from "next/headers";
 
 import { PlayerEntryClient } from "@/components/features/shots/PlayerEntryClient";
+import { CHILD_DEVICE_SESSION_COOKIE } from "@/lib/child-session";
 import { PARENT_INVITE_SESSION_COOKIE } from "@/lib/parent-session";
 import { createSupabaseAdminClient } from "@/lib/supabase/server";
 
@@ -32,21 +33,51 @@ async function getPlayerEntryData(
     previousShotTotal: 0,
   };
   const cookieStore = await cookies();
+  const childDeviceTokenId = cookieStore.get(CHILD_DEVICE_SESSION_COOKIE)?.value;
   const inviteId = cookieStore.get(PARENT_INVITE_SESSION_COOKIE)?.value;
   const supabase = createSupabaseAdminClient();
 
-  if (!inviteId || !supabase) {
+  if (!supabase) {
     return fallback;
   }
 
-  const { data: players } = await supabase
-    .from("players")
-    .select("id,first_name,last_initial")
-    .eq("invite_id", inviteId)
-    .eq("is_active", true)
-    .order("created_at", { ascending: true })
-    .limit(1);
-  const player = players?.[0];
+  let player:
+    | {
+        first_name: string;
+        id: string;
+        last_initial: string;
+      }
+    | null = null;
+
+  if (childDeviceTokenId) {
+    const { data: deviceToken } = await supabase
+      .from("child_device_tokens")
+      .select("revoked_at,expires_at,players!inner(id,first_name,last_initial)")
+      .eq("id", childDeviceTokenId)
+      .single();
+
+    if (
+      deviceToken &&
+      !deviceToken.revoked_at &&
+      (!deviceToken.expires_at ||
+        new Date(deviceToken.expires_at) >= new Date())
+    ) {
+      player = Array.isArray(deviceToken.players)
+        ? deviceToken.players[0]
+        : deviceToken.players;
+    }
+  }
+
+  if (!player && inviteId) {
+    const { data: players } = await supabase
+      .from("players")
+      .select("id,first_name,last_initial")
+      .eq("invite_id", inviteId)
+      .eq("is_active", true)
+      .order("created_at", { ascending: true })
+      .limit(1);
+    player = players?.[0] ?? null;
+  }
 
   if (!player) {
     return fallback;
