@@ -1,9 +1,10 @@
 "use client";
 
-/* eslint-disable @next/next/no-img-element */
-
 import { useState } from "react";
 import { Copy, Check } from "lucide-react";
+
+import { LocalQrCode } from "@/components/features/pairing/LocalQrCode";
+
 type PairingQrCodeCardProps = {
   playerName: string;
   inviteLink: string;
@@ -23,10 +24,6 @@ export function PairingQrCodeCard({
     setTimeout(() => setCopied(false), 2000);
   }
 
-  const qrCodeUrl = `https://api.qrserver.com/v1/create-qr-code/?size=180x180&margin=12&data=${encodeURIComponent(
-    inviteLink,
-  )}`;
-
   return (
     <div className="flex w-full flex-col items-center gap-6 px-1 pb-2 pt-1">
       <div className="text-center">
@@ -44,10 +41,9 @@ export function PairingQrCodeCard({
         player profile.
       </p>
 
-      <img
-        src={qrCodeUrl}
-        alt={`QR code for ${playerName}'s player link`}
-        className="h-[180px] w-[180px] rounded-lg bg-white p-2"
+      <LocalQrCode
+        label={`QR code for ${playerName}'s player link`}
+        value={inviteLink}
       />
 
       <div className="flex w-full items-center justify-between rounded-lg border-2 border-canton-ink bg-white px-4 py-3">
