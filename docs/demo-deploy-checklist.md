@@ -61,10 +61,11 @@ pnpm install
 
 ## 4. Environment Variables
 
-For the protected admin demo, add:
+For admin email sign-in, add:
 
 ```txt
-ADMIN_ACCESS_PASSWORD=choose-a-temporary-passcode
+ADMIN_ALLOWED_EMAILS=your-admin-email@example.com
+ADMIN_AUTH_SECRET=generate-a-long-random-secret
 ```
 
 For generated links, add:

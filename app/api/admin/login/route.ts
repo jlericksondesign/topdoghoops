@@ -1,38 +1,39 @@
 import { NextRequest, NextResponse } from "next/server";
 
 import {
-  ADMIN_SESSION_COOKIE,
-  ADMIN_SESSION_MAX_AGE,
-  createAdminSessionValue,
-  getAdminPasscode,
+  ADMIN_LOGIN_TOKEN_MAX_AGE,
+  createAdminToken,
+  isAllowedAdminEmail,
 } from "@/lib/admin-auth";
+import { sendAdminLoginEmail } from "@/lib/email/resend";
+
+function createAdminLoginLink(request: NextRequest, token: string) {
+  const baseUrl = process.env.APP_BASE_URL ?? request.nextUrl.origin;
+  return `${baseUrl.replace(/\/$/, "")}/api/admin/verify?token=${encodeURIComponent(
+    token,
+  )}`;
+}
 
 export async function POST(request: NextRequest) {
   const formData = await request.formData();
-  const submittedPasscode = String(formData.get("passcode") ?? "");
-  const adminPasscode = getAdminPasscode();
+  const email = String(formData.get("email") ?? "")
+    .trim()
+    .toLowerCase();
 
-  if (!adminPasscode || submittedPasscode !== adminPasscode) {
-    return NextResponse.redirect(
-      new URL("/admin/login?error=1", request.url),
-      303,
+  if (email && isAllowedAdminEmail(email)) {
+    const token = createAdminToken(
+      email,
+      "admin_login",
+      ADMIN_LOGIN_TOKEN_MAX_AGE,
     );
+
+    if (token) {
+      await sendAdminLoginEmail({
+        to: email,
+        loginLink: createAdminLoginLink(request, token),
+      });
+    }
   }
 
-  const sessionValue = createAdminSessionValue(adminPasscode);
-  const response = NextResponse.redirect(new URL("/admin", request.url), 303);
-
-  if (sessionValue) {
-    response.cookies.set({
-      name: ADMIN_SESSION_COOKIE,
-      value: sessionValue,
-      httpOnly: true,
-      secure: process.env.NODE_ENV === "production",
-      sameSite: "lax",
-      path: "/",
-      maxAge: ADMIN_SESSION_MAX_AGE,
-    });
-  }
-
-  return response;
+  return NextResponse.redirect(new URL("/admin/login?sent=1", request.url), 303);
 }

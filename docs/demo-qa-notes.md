@@ -117,6 +117,26 @@ How to use:
 * Screenshot: Manual QA note from July 5, 2026
 * Status: Open
 
+### 11. Add CF McCarthy sponsor branding
+
+* Screen: Global app shell / homepage / relevant sponsor placement
+* Device: Mobile / browser
+* Issue: Friend requested adding CF McCarthy branding, either as the CF McCarthy logo or a `Sponsored by CF McCarthy` placement.
+* Expected: Decide the sponsor placement and add tasteful CF McCarthy branding without competing with the Top Dog Hoops identity.
+* Priority: Medium
+* Screenshot: Friend raw note from July 9, 2026
+* Status: Open
+
+### 12. Add break-a-sweat bonus button
+
+* Screen: `/player-entry`
+* Device: Mobile / browser
+* Issue: Friend requested a bonus button for `breaking a sweat`.
+* Expected: Add or evaluate a `Break a Sweat` bonus action in the shot log flow, including how it affects scoring, parent approval, and the final submitted shot log.
+* Priority: Medium
+* Screenshot: Friend raw note from July 9, 2026
+* Status: Open
+
 ---
 
 ## Resolved
