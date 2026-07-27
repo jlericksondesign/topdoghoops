@@ -16,6 +16,8 @@ type ParentInvite = {
   grade: number;
   gender: "boy" | "girl";
   division:
+    | "elementary"
+    | "middle_school"
     | "boys_elementary"
     | "boys_middle_school"
     | "girls_elementary"

@@ -1,0 +1,4 @@
+Source rows: 559
+Clean rows: 559
+Skipped rows: 0
+

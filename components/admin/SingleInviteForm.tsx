@@ -131,7 +131,7 @@ export function SingleInviteForm() {
                 </span>
                 <input
                   required
-                  min={1}
+                  min={0}
                   max={12}
                   type="number"
                   name="grade"
@@ -148,10 +148,8 @@ export function SingleInviteForm() {
                   name="division"
                   className="h-11 rounded-xl border-2 border-canton-cream-line bg-canton-cream px-3 text-sm font-bold text-canton-ink outline-none focus:border-canton-green"
                 >
-                  <option value="boys_elementary">Boys Elementary</option>
-                  <option value="boys_middle_school">Boys Middle School</option>
-                  <option value="girls_elementary">Girls Elementary</option>
-                  <option value="girls_middle_school">Girls Middle School</option>
+                  <option value="elementary">Elementary</option>
+                  <option value="middle_school">Middle School</option>
                 </select>
               </label>
 

@@ -4,10 +4,8 @@ import { ChevronDown } from "lucide-react";
 
 const DIVISIONS = [
   "Overall",
-  "Boys Elementary",
-  "Boys Middle School",
-  "Girls Elementary",
-  "Girls Middle School",
+  "Elementary",
+  "Middle School",
 ];
 
 type DivisionSelectProps = {

@@ -5,6 +5,8 @@ export type InviteCsvInput = {
   player_last_initial: string;
   grade: number;
   division:
+    | "elementary"
+    | "middle_school"
     | "boys_elementary"
     | "boys_middle_school"
     | "girls_elementary"
@@ -28,10 +30,12 @@ export const INVITE_CSV_HEADERS = [
 ] as const;
 
 export const INVITE_CSV_TEMPLATE = `${INVITE_CSV_HEADERS.join(",")}
-parent@example.com,Test Parent,Maceo,23,5,boys_elementary
+parent@example.com,,Maceo,J,5,elementary
 `;
 
 const validDivisions = [
+  "elementary",
+  "middle_school",
   "boys_elementary",
   "boys_middle_school",
   "girls_elementary",
@@ -97,6 +101,28 @@ export function deriveGenderFromDivision(
   return division.startsWith("girls_") ? "girl" : "boy";
 }
 
+function normalizeGrade(value: string) {
+  const trimmedValue = value.trim().toLowerCase();
+
+  if (["k", "kg", "kindergarten"].includes(trimmedValue)) {
+    return 0;
+  }
+
+  return Number.parseInt(trimmedValue, 10);
+}
+
+function deriveDivisionFromGrade(grade: number) {
+  if (grade >= 0 && grade <= 5) {
+    return "elementary";
+  }
+
+  if (grade >= 6 && grade <= 8) {
+    return "middle_school";
+  }
+
+  return "";
+}
+
 function validateRow(
   rowNumber: number,
   values: Partial<Record<keyof InviteCsvInput, string>>,
@@ -107,8 +133,9 @@ function validateRow(
   const playerFirstName = values.player_first_name?.trim() ?? "";
   const playerLastInitial = values.player_last_initial?.trim() ?? "";
   const gradeValue = values.grade?.trim() ?? "";
-  const division = normalizeDivision(values.division ?? "");
-  const grade = Number.parseInt(gradeValue, 10);
+  const grade = normalizeGrade(gradeValue);
+  const division =
+    normalizeDivision(values.division ?? "") || deriveDivisionFromGrade(grade);
 
   if (!parentEmail || !isEmail(parentEmail)) {
     errors.push("Parent email is required.");
@@ -122,8 +149,8 @@ function validateRow(
     errors.push("Player last initial is required.");
   }
 
-  if (!Number.isInteger(grade) || grade < 1 || grade > 12) {
-    errors.push("Grade must be a number from 1 to 12.");
+  if (!Number.isInteger(grade) || grade < 0 || grade > 12) {
+    errors.push("Grade must be K or a number from 1 to 12.");
   }
 
   if (!validDivisions.includes(division)) {
@@ -139,7 +166,7 @@ function validateRow(
             parent_email: parentEmail,
             parent_name: parentName,
             player_first_name: playerFirstName,
-            player_last_initial: playerLastInitial.slice(0, 3),
+            player_last_initial: playerLastInitial.charAt(0).toUpperCase(),
             grade,
             division: division as InviteCsvInput["division"],
           }
