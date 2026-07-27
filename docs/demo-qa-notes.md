@@ -144,9 +144,10 @@ How to use:
 * Issue: The app does not yet have clear Privacy Policy or Terms of Use language for families, admins, and league stakeholders to review.
 * Expected: Draft plain-language Privacy Policy and Terms of Use documents that describe the app, operator/contact placeholder, data collected, child/player data handling, parent/admin responsibilities, acceptable use, and review-needed legal disclaimers.
 * Draft files: `docs/privacy/privacy-policy-draft.md`, `docs/privacy/terms-of-use-draft.md`
+* App destinations: `/privacy`, `/terms`, `/rules`, and `/contact` are linked in a small global footer below the main content on every page.
 * Priority: High
 * Screenshot: Privacy review feedback from July 27, 2026
-* Status: Drafted - needs operator and attorney review
+* Status: App destinations added - needs operator and attorney review
 
 ### 14. Define parental consent and deletion request process
 

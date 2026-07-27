@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import "./globals.css";
 import { inter, pixelifySans, barlow } from "./fonts";
+import { LegalFooter } from "@/components/app/LegalFooter";
 
 export const metadata: Metadata = {
   title: "Top Dog Hoops",
@@ -25,7 +26,10 @@ export default function RootLayout({
       lang="en"
       className={`${inter.variable} ${pixelifySans.variable} ${barlow.variable}`}
     >
-      <body className="font-sans">{children}</body>
+      <body className="font-sans">
+        {children}
+        <LegalFooter />
+      </body>
     </html>
   );
 }
