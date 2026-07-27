@@ -21,7 +21,7 @@ export async function GET(
   const supabase = createSupabaseAdminClient();
 
   if (!supabase) {
-    return NextResponse.redirect(new URL("/kid/sign-in", request.url));
+    return NextResponse.redirect(new URL("/player/sign-in", request.url));
   }
 
   const { data: deviceToken } = await supabase
@@ -35,7 +35,7 @@ export async function GET(
     deviceToken.revoked_at ||
     (deviceToken.expires_at && new Date(deviceToken.expires_at) < new Date())
   ) {
-    return NextResponse.redirect(new URL("/kid/sign-in", request.url));
+    return NextResponse.redirect(new URL("/player/sign-in", request.url));
   }
 
   await supabase

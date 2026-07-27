@@ -129,10 +129,10 @@ export default async function PlayerHomePage() {
               Ask your parent to set up this device from the family dashboard.
             </p>
             <Link
-              href="/kid/sign-in"
+              href="/player/sign-in"
               className="mt-5 inline-flex h-12 items-center justify-center rounded-xl bg-canton-green px-5 text-sm font-black uppercase tracking-wide text-white"
             >
-              Kid Sign In
+              Player Sign In
             </Link>
           </div>
         </div>

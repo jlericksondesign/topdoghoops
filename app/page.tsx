@@ -29,10 +29,10 @@ export default function HomePage() {
           Parent Sign In
         </Link>
         <Link
-          href="/kid/sign-in"
+          href="/player/sign-in"
           className="rounded-2xl border-2 border-white bg-canton-orange py-4 text-center text-base font-bold uppercase tracking-wide text-white shadow-[0_4px_0_rgba(0,0,0,0.15)]"
         >
-          Kid Sign In
+          Player Sign In
         </Link>
       </div>
     </main>

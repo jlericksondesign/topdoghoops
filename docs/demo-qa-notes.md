@@ -26,37 +26,37 @@ How to use:
 * Notes: Fixed locally on July 27, 2026 by wiring `components/features/auth/MagicLinkRequestForm.tsx` to `POST /parent/link-request/request`, adding signed parent login links at `/parent/verify`, and sending parent sign-in email through Resend. Parent-facing copy is intentionally neutral: `If this parent email is approved, you'll receive a magic link...`; lookup/send failures are logged server-side instead of shown in the UI.
 * Priority: High
 * Screenshot: Manual QA notes from July 5 and July 27, 2026
-* Status: Fixed locally - needs production deploy and live email verification
+* Status: Resolved - parent sign-in magic link verified live on July 27, 2026
 
-### 2. Homepage buttons should be Parent Sign In and Kid Sign In
+### 2. Homepage buttons should be Parent Sign In and Player Sign In
 
 * Screen: `/`
 * Device: Browser / live or local QA
 * Issue: The buttons on `topdoghoops.com` do not clearly match the updated parent and child sign-in entry points.
-* Expected: Use two simple homepage CTAs: `Parent Sign In` and `Kid Sign In`.
+* Expected: Use two simple homepage CTAs: `Parent Sign In` and `Player Sign In`.
 * Priority: High
 * Screenshot: Manual QA note from July 5, 2026
-* Status: Open
+* Status: Fixed locally - needs deploy
 
-### 3. Accept invite page shows link not created state without guidance
+### 3. Player Sign In should help players trigger parent setup
+
+* Screen: `/player/sign-in`
+* Device: Browser / live or local QA
+* Issue: The old `Kid Sign In` destination had buttons that did not create a useful player setup path.
+* Expected: Rename the destination to `Player Sign In` and let users enter a parent email. If the parent email is approved/accepted in the database, the parent should receive the magic link so they can set up the player device.
+* Priority: High
+* Screenshot: Manual QA note from July 27, 2026
+* Status: Fixed locally - needs deploy and live verification
+
+### 4. Accept invite page shows link not created state without guidance
 
 * Screen: `/invite/accept`
 * Device: Browser / live or local QA
 * Issue: The accept invite link flow shows a `link not created` state, which does not explain what the parent is supposed to do next.
-* Expected: The accept invite page should either complete the invite acceptance path or show clear recovery guidance, such as requesting a new invite or contacting the league/admin.
+* Expected: Confirm whether this state is still relevant after parent/player sign-in updates. If still reachable, the page should either complete invite acceptance or show clear recovery guidance, such as requesting a new invite or contacting the league/admin.
 * Priority: High
 * Screenshot: Manual QA note from July 5, 2026
-* Status: Open
-
-### 4. Define what happens when a child visits topdoghoops.com
-
-* Screen: `/`
-* Device: Browser / live or local QA
-* Issue: The current homepage flow does not define the child experience if a child directly visits `topdoghoops.com` instead of using a paired-device link.
-* Expected: `Kid Sign In` should provide the child-safe path from the public homepage, such as prompting for a pairing code, explaining that a parent must set up the device, or routing paired devices to the player dashboard.
-* Priority: High
-* Screenshot: Manual QA note from July 5, 2026
-* Status: Open
+* Status: Needs product review - may be superseded
 
 ### 5. Homepage headline spacing and font size need mobile fit pass
 
@@ -66,7 +66,7 @@ How to use:
 * Expected: Reduce the top margin above the headline and resize the headline so `Top Dog` stays on one line at 360px width.
 * Priority: Medium
 * Screenshot: Manual QA note from July 5, 2026
-* Status: Open
+* Status: Resolved - working as expected in QA
 
 ### 6. Add hamburger navigation for key surfaces
 
@@ -76,7 +76,7 @@ How to use:
 * Expected: Add a hamburger nav with role-aware top-level links. Parent links: `Dashboard`, `Shot Approvals`, `Leaderboard`, `Contact`. Player links: `Dashboard`, `Shot Log`, `Leaderboard`.
 * Priority: Medium
 * Screenshot: Manual QA note from July 5, 2026
-* Status: Open
+* Status: Resolved - hamburger navigation exists
 
 ### 7. Admin invite status should progress from draft to sent to accepted
 
@@ -84,9 +84,10 @@ How to use:
 * Device: Browser / live or local QA
 * Issue: Manual email invites need a visible lifecycle so admins know whether an invite is drafted, sent, or accepted.
 * Expected: After an admin sends a manual email invite, update the invite status from `draft` to `sent`; when the parent accepts, update the status to `accepted`.
+* Notes: Status progression is working as expected in QA. Add a CTA that lets the admin edit the invite form/details before sending the invite email.
 * Priority: High
 * Screenshot: Manual QA note from July 5, 2026
-* Status: Open
+* Status: Partially resolved - edit-before-send CTA still needed
 
 ### 8. Add single invite should open a modal form
 
@@ -96,7 +97,7 @@ How to use:
 * Expected: Make `Add single invite` a button that opens the invite form in a modal.
 * Priority: Medium
 * Screenshot: Manual QA note from July 5, 2026
-* Status: Open
+* Status: Resolved - existing implementation uses a modal
 
 ### 9. Remove gender field
 
@@ -113,10 +114,10 @@ How to use:
 * Screen: `/player-entry`, `/parent-approval`, global navigation
 * Device: Mobile / browser
 * Issue: Rules are not easy to find, and users are not shown a first-visit disclosure before using the shot log or shot approval log.
-* Expected: Add an easy-to-find rules surface and show a modal disclosure on first visit to the shot log and shot approval log. Users must explicitly tap `Agree` before proceeding.
+* Expected: Rules access and first-visit disclosure modals exist. Update the actual rules content before launch. Users must explicitly tap `Agree` before proceeding.
 * Priority: High
 * Screenshot: Manual QA note from July 5, 2026
-* Status: Open
+* Status: Partially resolved - content update needed
 
 ### 11. Add CF McCarthy sponsor branding
 
@@ -212,7 +213,7 @@ How to use:
 * Expected: Footer links should stay below the main screen content without covering headings, cards, or CTAs. On short mobile viewports, the layout should either scroll naturally or reserve enough space so the footer never overlays player content.
 * Priority: High
 * Screenshot: `IMG_8780.PNG`, `IMG_8781.PNG`, July 27, 2026
-* Status: Open
+* Status: Likely resolved - needs final live sweep
 
 ### 20. Header needs iOS in-app browser safe-area pass
 
@@ -222,7 +223,7 @@ How to use:
 * Expected: Add safe-area-aware top spacing so the app header is fully below iOS in-app browser chrome while keeping the header compact on normal mobile browsers.
 * Priority: High
 * Screenshot: `IMG_8781.PNG`, July 27, 2026
-* Status: Open
+* Status: Likely resolved - needs final live sweep
 
 ---
 
@@ -376,14 +377,14 @@ Use this section for meaningful visual/UI changes that are not tied to a numbere
 
 ### 1. Switched wordmark, headings, and score displays to local Google Fonts
 
-* Change: Replaced the system font stack (`Impact`/`Arial Black`) and generic monospace used for the wordmark, page headings, and arcade score digits with three self-hosted font families: `Inter` (body/UI text), `Barlow` Black (wordmark + all page headings), and `Pixelify Sans` (scoreboard/leaderboard digits only).
+* Change: Replaced the system font stack (`Impact`/`Arial Black`) and hard-to-read score digits with self-hosted font families: `Inter` (body/UI text), `Barlow` Black (wordmark + all page headings), and `Roboto Mono` (scoreboard/leaderboard digits only).
 * Files/components touched:
-  * `app/fonts.ts` (new) — `next/font/local` declarations for `inter`, `pixelifySans`, `barlow`
+  * `app/fonts.ts` (new) — `next/font/local` declarations for `inter`, `robotoMono`, `barlow`
   * `app/layout.tsx` — applies the three font variables to `<html>`
   * `tailwind.config.ts` — `font-sans` (Inter), `font-pixel`, `font-heading` (Barlow) utilities
-  * `app/globals.css` — `.canton-wordmark`, `.canton-wordmark-sm` now use Barlow; `.canton-score-font` now uses Pixelify Sans
+  * `app/globals.css` — `.canton-wordmark`, `.canton-wordmark-sm` now use Barlow; `.canton-score-font` now uses Roboto Mono
   * `font-heading` added to the 8 headline elements: `app/leaderboards/page.tsx`, `app/player/page.tsx`, `app/parent-approval/page.tsx`, `app/player-entry/page.tsx`, `components/features/auth/MagicLinkRequestForm.tsx`, `components/features/pairing/ChildDeviceSetupCard.tsx`, `components/features/pairing/PairingQrCodeCard.tsx`, `components/features/family/FamilySummaryCard.tsx`
-  * Font files sourced from `public/fonts/{Inter,Barlow,Pixelify_Sans}/` (user-provided)
+  * Font files sourced from `public/fonts/{Inter,Barlow,Roboto_Mono}/` (user-provided)
 * Why: User requested Google Fonts in place of the placeholder system stack. `next/font/google` was ruled out because it fetches font files at build time and Codex's build environment has no network access, which had already broken the build once before. Switched to `next/font/local` with self-hosted `.woff2`/`.ttf` files instead, per explicit instruction: never use `next/font/google`.
 * Status: Done — not yet verified in a live build.
 
