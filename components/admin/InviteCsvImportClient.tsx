@@ -65,7 +65,9 @@ export function InviteCsvImportClient() {
       }
 
       setCsvText("");
-      setMessage(`${result.imported ?? 0} draft invite(s) created.`);
+      setMessage(
+        `${result.imported ?? 0} roster row(s) saved. No emails were sent.`,
+      );
     } catch (caughtError) {
       setError(
         caughtError instanceof Error
@@ -81,7 +83,7 @@ export function InviteCsvImportClient() {
     <section className="overflow-hidden rounded-2xl border-2 border-canton-ink bg-white">
       <div className="bg-canton-green px-4 py-3">
         <p className="text-sm font-black uppercase tracking-widest text-white">
-          CSV Import
+          Roster Reference CSV
         </p>
       </div>
       <div className="flex flex-col gap-5 px-4 py-5">
@@ -155,7 +157,7 @@ export function InviteCsvImportClient() {
                 onClick={handleImport}
                 className="h-12 rounded-xl bg-canton-green px-4 text-sm font-black uppercase text-white disabled:cursor-not-allowed disabled:bg-canton-pill disabled:text-canton-muted"
               >
-                {isImporting ? "Importing" : "Create Drafts"}
+                {isImporting ? "Saving" : "Save Roster"}
               </button>
             </div>
 

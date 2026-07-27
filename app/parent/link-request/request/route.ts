@@ -1,12 +1,29 @@
 import { NextRequest, NextResponse } from "next/server";
 
+import {
+  createInviteLink,
+  createInviteToken,
+  getInviteExpirationDate,
+  hashInviteToken,
+} from "@/lib/invite-token";
 import { createParentLoginToken } from "@/lib/parent-auth";
-import { sendParentLoginEmail } from "@/lib/email/resend";
+import {
+  sendParentInviteEmail,
+  sendParentLoginEmail,
+} from "@/lib/email/resend";
 import { createSupabaseAdminClient } from "@/lib/supabase/server";
 
 type AcceptedInvite = {
   id: string;
   parent_email: string;
+};
+
+type RosterInvite = {
+  id: string;
+  parent_email: string;
+  parent_name: string | null;
+  player_first_name: string;
+  player_last_initial: string;
 };
 
 function createParentLoginLink(request: NextRequest, token: string) {
@@ -19,6 +36,54 @@ function createParentLoginLink(request: NextRequest, token: string) {
 
 function okResponse() {
   return NextResponse.json({ ok: true });
+}
+
+function getInviteDisplayName(invite: RosterInvite) {
+  return `${invite.player_first_name} ${invite.player_last_initial}.`;
+}
+
+async function sendRosterInviteLink(request: NextRequest, invite: RosterInvite) {
+  const supabase = createSupabaseAdminClient();
+
+  if (!supabase) {
+    return;
+  }
+
+  const token = createInviteToken();
+  const expiresAt = getInviteExpirationDate();
+  const inviteLink = createInviteLink(token, request.url);
+  const emailResult = await sendParentInviteEmail({
+    to: invite.parent_email,
+    parentName: invite.parent_name,
+    playerName: getInviteDisplayName(invite),
+    inviteLink,
+  });
+
+  if (!emailResult.ok) {
+    console.error("Parent roster invite email failed", {
+      error: emailResult.error,
+    });
+    return;
+  }
+
+  const { error } = await supabase
+    .from("parent_invites")
+    .update({
+      token_hash: hashInviteToken(token),
+      status: "sent",
+      expires_at: expiresAt,
+      last_sent_at: new Date().toISOString(),
+    })
+    .eq("id", invite.id)
+    .neq("status", "accepted");
+
+  if (error) {
+    console.error("Parent roster invite status update failed", {
+      code: error.code,
+      details: error.details,
+      message: error.message,
+    });
+  }
 }
 
 export async function POST(request: NextRequest) {
@@ -59,6 +124,31 @@ export async function POST(request: NextRequest) {
   }
 
   if (!invite) {
+    const { data: rosterInvite, error: rosterError } = await supabase
+      .from("parent_invites")
+      .select(
+        "id,parent_email,parent_name,player_first_name,player_last_initial",
+      )
+      .eq("parent_email", email)
+      .in("status", ["draft", "sent"])
+      .order("created_at", { ascending: false })
+      .limit(1)
+      .maybeSingle();
+
+    if (rosterError) {
+      console.error("Parent roster invite lookup failed", {
+        code: rosterError.code,
+        details: rosterError.details,
+        message: rosterError.message,
+      });
+
+      return okResponse();
+    }
+
+    if (rosterInvite) {
+      await sendRosterInviteLink(request, rosterInvite as RosterInvite);
+    }
+
     return okResponse();
   }
 

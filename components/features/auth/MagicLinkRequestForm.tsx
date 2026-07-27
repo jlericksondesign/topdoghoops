@@ -42,7 +42,7 @@ export function MagicLinkRequestForm() {
             <>
               If this parent email is approved,
               <br />
-              you&apos;ll receive a magic link at
+              you&apos;ll receive the right sign-in or invite link at
               <br />
               {email || "your email"}.
             </>
@@ -50,7 +50,7 @@ export function MagicLinkRequestForm() {
             <>
               We&apos;ll send a one-tap sign-in link
               <br />
-              — no password needed.
+              or invite link — no password needed.
             </>
           )}
         </p>
@@ -60,7 +60,7 @@ export function MagicLinkRequestForm() {
         <div className="w-full rounded-2xl border-2 border-canton-ink bg-white px-4 py-5 text-center">
           <p className="text-sm font-bold leading-6 text-canton-ink">
             Open the newest link on this device to return to your family
-            dashboard. Older sign-in links may be expired.
+            dashboard or confirm your player. Older links may be expired.
           </p>
         </div>
       ) : (

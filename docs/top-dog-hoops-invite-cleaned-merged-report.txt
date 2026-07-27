@@ -1,0 +1,8 @@
+In-town cleaned rows read: 559
+Travel source rows: 233
+Travel clean rows: 233
+Travel skipped rows: 0
+Travel rows with secondary guardian email ignored: 181
+Duplicate rows removed during merge: 138
+Merged clean rows: 654
+
