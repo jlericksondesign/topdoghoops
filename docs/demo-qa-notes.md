@@ -137,6 +137,61 @@ How to use:
 * Screenshot: Friend raw note from July 9, 2026
 * Status: Open
 
+### 13. Create Privacy Policy and Terms of Use drafts
+
+* Screen: Public legal pages / global footer or navigation
+* Device: Browser / mobile
+* Issue: The app does not yet have clear Privacy Policy or Terms of Use language for families, admins, and league stakeholders to review.
+* Expected: Draft plain-language Privacy Policy and Terms of Use documents that describe the app, operator/contact placeholder, data collected, child/player data handling, parent/admin responsibilities, acceptable use, and review-needed legal disclaimers.
+* Draft files: `docs/privacy/privacy-policy-draft.md`, `docs/privacy/terms-of-use-draft.md`
+* Priority: High
+* Screenshot: Privacy review feedback from July 27, 2026
+* Status: Drafted - needs operator and attorney review
+
+### 14. Define parental consent and deletion request process
+
+* Screen: Parent invite/accept flow, privacy/contact surface, admin support workflow
+* Device: Browser / mobile
+* Issue: If COPPA applies, the app needs a clear process for parental consent and parent deletion requests.
+* Expected: Document the parent consent flow, where consent language appears, how parents can request deletion of child/player data, who receives those requests, and how the app/admin process should confirm completion.
+* Draft files: `docs/privacy/coppa-parent-consent-flow.md`
+* Priority: High
+* Screenshot: Privacy review feedback from July 27, 2026
+* Status: Drafted - needs operator and attorney review
+
+### 15. Document admin access controls and MFA expectations
+
+* Screen: Admin access / `/admin` / deployment operations
+* Device: Browser / admin workflow
+* Issue: Admin access controls, including MFA expectations, are not yet documented for launch readiness.
+* Expected: Create an admin access control summary covering who can be an admin, least-privilege expectations, MFA requirement, invite/access review cadence, and what operational accounts need protection.
+* Draft files: `docs/privacy/admin-access-controls.md`
+* Priority: High
+* Screenshot: Privacy review feedback from July 27, 2026
+* Status: Drafted - needs operator review
+
+### 16. Document data retention and deletion practices
+
+* Screen: Privacy docs / admin operations / data model
+* Device: Browser / admin workflow
+* Issue: The app does not yet document how long parent, player, invite, device token, shot log, and leaderboard data are retained or deleted.
+* Expected: Create a data retention and deletion policy that lists each major data category, retention period or decision placeholder, deletion trigger, and who is responsible for carrying out deletion.
+* Draft files: `docs/privacy/data-retention-deletion.md`
+* Priority: High
+* Screenshot: Privacy review feedback from July 27, 2026
+* Status: Drafted - needs operator and attorney review
+
+### 17. Create ongoing maintenance and incident response plan
+
+* Screen: Operations documentation
+* Device: Admin/maintainer workflow
+* Issue: The project needs a documented plan for maintenance, security updates, monitoring, and incident response.
+* Expected: Draft an incident response and maintenance plan covering owner/contact placeholders, severity levels, breach/privacy incident steps, parent/admin notification workflow, backup/recovery checks, dependency updates, and periodic policy review.
+* Draft files: `docs/privacy/incident-response-plan.md`
+* Priority: High
+* Screenshot: Privacy review feedback from July 27, 2026
+* Status: Drafted - needs operator review
+
 ---
 
 ## Resolved
