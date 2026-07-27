@@ -15,6 +15,11 @@ type SendParentLoginEmailInput = {
   to: string;
 };
 
+type SendLegalReviewSubmissionEmailInput = {
+  answers: Record<string, string>;
+  to: string;
+};
+
 type ResendEmailResponse = {
   id?: string;
   message?: string;
@@ -226,6 +231,73 @@ export async function sendParentLoginEmail({
 ${loginLink}
 
 If you did not request this, you can ignore this email.`,
+    }),
+  });
+
+  const result = await readResendResponse(response);
+
+  if (!response.ok) {
+    return {
+      ok: false,
+      error: result.message ?? result.name ?? "Resend could not send email.",
+    };
+  }
+
+  return {
+    ok: true,
+    id: result.id,
+  };
+}
+
+export async function sendLegalReviewSubmissionEmail({
+  answers,
+  to,
+}: SendLegalReviewSubmissionEmailInput) {
+  const config = getRequiredEmailConfig();
+
+  if (!config) {
+    return {
+      ok: false,
+      error: "Resend environment variables are not available yet.",
+    };
+  }
+
+  const rows = Object.entries(answers)
+    .map(([label, value]) => {
+      const escapedLabel = escapeHtml(label);
+      const escapedValue = escapeHtml(value || "Not provided").replaceAll(
+        "\n",
+        "<br />",
+      );
+
+      return `<tr><th align="left" style="padding: 10px; border-bottom: 1px solid #e3ded9; vertical-align: top;">${escapedLabel}</th><td style="padding: 10px; border-bottom: 1px solid #e3ded9;">${escapedValue}</td></tr>`;
+    })
+    .join("");
+  const textRows = Object.entries(answers)
+    .map(([label, value]) => `${label}: ${value || "Not provided"}`)
+    .join("\n\n");
+
+  const response = await fetch("https://api.resend.com/emails", {
+    method: "POST",
+    headers: {
+      Authorization: `Bearer ${config.apiKey}`,
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      from: config.from,
+      to,
+      reply_to: config.replyTo,
+      subject: "Top Dog Hoops legal review intake submitted",
+      html: `
+        <div style="font-family: Arial, sans-serif; color: #241000; line-height: 1.5;">
+          <h1 style="font-size: 28px; margin-bottom: 12px;">Legal Review Intake</h1>
+          <p>A temporary Top Dog Hoops legal/privacy review form was submitted.</p>
+          <table cellpadding="0" cellspacing="0" style="border-collapse: collapse; width: 100%; font-size: 14px;">
+            ${rows}
+          </table>
+        </div>
+      `,
+      text: `Top Dog Hoops legal/privacy review form submitted.\n\n${textRows}`,
     }),
   });
 
