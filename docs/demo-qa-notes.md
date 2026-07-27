@@ -194,6 +194,36 @@ How to use:
 * Screenshot: Privacy review feedback from July 27, 2026
 * Status: Drafted - needs operator review
 
+### 18. Player shot submission controls collide with mobile browser chrome
+
+* Screen: Shot logging flow / player shot counter submission
+* Device: iPhone in Messages browser
+* Issue: The friend checkbox and `Submit` button sit too close to the bottom of the viewport and overlap visually with the browser bottom bar area. The `Back` link and URL pill compete for the same space, making the submit area feel cramped and partially obscured.
+* Expected: Add mobile safe-area spacing and keep the shot submission controls fully visible above the browser chrome. The primary `Submit` action should have clear breathing room and should not feel attached to the bottom browser UI.
+* Priority: High
+* Screenshot: `IMG_8779.jpg`, July 27, 2026
+* Status: Fixed locally - needs deploy and iPhone in-app browser verification
+
+### 19. Legal footer links overlap player dashboard content on short mobile screens
+
+* Screen: `/player`
+* Device: iPhone in Messages browser
+* Issue: The small legal footer links appear in the middle of the player dashboard content, overlapping the `LET'S GO, LOGAN E!` headline in one state and competing with the bottom of the player dashboard in another.
+* Expected: Footer links should stay below the main screen content without covering headings, cards, or CTAs. On short mobile viewports, the layout should either scroll naturally or reserve enough space so the footer never overlays player content.
+* Priority: High
+* Screenshot: `IMG_8780.PNG`, `IMG_8781.PNG`, July 27, 2026
+* Status: Open
+
+### 20. Header needs iOS in-app browser safe-area pass
+
+* Screen: Global app shell / `/player`
+* Device: iPhone in Messages browser
+* Issue: The iOS status/navigation area overlaps the Top Dog Hoops header. In the screenshot, the Messages back label and status icons sit on top of the logo/wordmark and hamburger button.
+* Expected: Add safe-area-aware top spacing so the app header is fully below iOS in-app browser chrome while keeping the header compact on normal mobile browsers.
+* Priority: High
+* Screenshot: `IMG_8781.PNG`, July 27, 2026
+* Status: Open
+
 ---
 
 ## Resolved

@@ -129,7 +129,7 @@ export function PlayerEntryClient({
       </FirstVisitDisclosure>
 
       <div
-        className={`relative flex flex-col items-center px-11 ${
+        className={`relative flex shrink-0 flex-col items-center px-11 ${
           isRevealed
             ? "min-h-[520px] justify-end pb-12 pt-14"
             : "min-h-[440px] pt-12"
@@ -155,49 +155,51 @@ export function PlayerEntryClient({
                 }
               />
             </div>
-
-            <div className="mt-4 w-full max-w-[314px]">
-              <ScoreIncrementGrid value={score} onChange={setScore} />
-            </div>
           </>
         ) : (
           <MascotRevealBadge className="h-[260px] w-[260px]" />
         )}
       </div>
 
-      <div className="relative flex-1 bg-canton-tan">
+      <div className="relative flex min-h-[360px] flex-1 flex-col items-center bg-canton-tan px-11 pb-[calc(2rem+env(safe-area-inset-bottom))]">
         <div
-          className={`absolute inset-0 flex flex-col items-center gap-6 px-11 pb-8 pt-[172px] transition-opacity duration-500 ${
+          className={`flex h-full w-full max-w-[314px] flex-col items-center transition-opacity duration-500 ${
             isEntry ? "opacity-100" : "pointer-events-none opacity-0"
           }`}
         >
-          <FriendBonusToggle
-            checked={shotWithFriend}
-            onCheckedChange={setShotWithFriend}
-            friendName={friendName}
-            onFriendNameChange={setFriendName}
-          />
+          <div className="-mt-11 w-full">
+            <ScoreIncrementGrid value={score} onChange={setScore} />
+          </div>
 
-          <SubmitScoreButton
-            disabled={score <= 0 || submitStatus === "saving"}
-            label={submitStatus === "saving" ? "Submitting" : "Submit"}
-            onClick={handleSubmit}
-          />
-          {submitError ? (
-            <p className="text-center text-xs font-black uppercase text-canton-orange">
-              {submitError}
-            </p>
-          ) : null}
-          <Link
-            href="/player"
-            className="text-sm uppercase tracking-wide text-canton-ink"
-          >
-            &larr; Back
-          </Link>
+          <div className="mt-auto flex w-full flex-col items-center gap-6">
+            <FriendBonusToggle
+              checked={shotWithFriend}
+              onCheckedChange={setShotWithFriend}
+              friendName={friendName}
+              onFriendNameChange={setFriendName}
+            />
+
+            <SubmitScoreButton
+              disabled={score <= 0 || submitStatus === "saving"}
+              label={submitStatus === "saving" ? "Submitting" : "Submit"}
+              onClick={handleSubmit}
+            />
+            {submitError ? (
+              <p className="text-center text-xs font-black uppercase text-canton-orange">
+                {submitError}
+              </p>
+            ) : null}
+            <Link
+              href="/player"
+              className="text-sm uppercase tracking-wide text-canton-ink"
+            >
+              &larr; Back
+            </Link>
+          </div>
         </div>
 
         <div
-          className={`absolute inset-0 flex flex-col items-center gap-7 px-10 pb-8 pt-10 transition-opacity duration-500 ${
+          className={`absolute inset-0 flex flex-col items-center gap-7 px-10 pb-[calc(2rem+env(safe-area-inset-bottom))] pt-10 transition-opacity duration-500 ${
             isRevealed ? "opacity-100" : "pointer-events-none opacity-0"
           }`}
         >
