@@ -1,9 +1,3 @@
-# Top Dog Hoops Terms of Use Draft
-
-Draft date: July 27, 2026
-
-Attorney review required before launch. Replace bracketed placeholders before publishing.
-
 ## Acceptance
 
 By using Top Dog Hoops, you agree to these Terms of Use. If you are a parent or guardian, you agree on behalf of yourself and any child/player profile you manage.
@@ -63,11 +57,8 @@ Use of Top Dog Hoops is also governed by the Privacy Policy. The Privacy Policy 
 
 ## Availability
 
-The app may be unavailable or changed from time to time. `[LEGAL/ORGANIZATION NAME]` may modify, pause, or end the challenge or app access.
+The app may be unavailable or changed from time to time. CYBA may modify, pause, or end the challenge or app access.
 
-## Limitation of Liability
-
-`[ATTORNEY TO REVIEW AND INSERT APPROPRIATE LIMITATION LANGUAGE]`
 
 ## Changes to These Terms
 
@@ -75,9 +66,4 @@ Top Dog Hoops may update these terms. Material changes should be communicated to
 
 ## Contact
 
-Questions about these terms can be sent to `[CONTACT EMAIL]`.
-
-## Review Status
-
-Status: Draft for operator and attorney review.
-
+Questions about these terms can be sent to hello@topdoghoops.com.

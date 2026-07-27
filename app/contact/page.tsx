@@ -1,8 +1,5 @@
-import Link from "next/link";
-
 import { AppHeaderBar } from "@/components/app/AppHeaderBar";
-
-const contactEmail = "hello@topdoghoops.com";
+import { appContactEmail } from "@/lib/contact";
 
 export default function ContactPage() {
   return (
@@ -28,10 +25,10 @@ export default function ContactPage() {
               Email
             </h2>
             <a
-              href={`mailto:${contactEmail}`}
+              href={`mailto:${appContactEmail}`}
               className="mt-2 block font-black text-canton-green underline underline-offset-4"
             >
-              {contactEmail}
+              {appContactEmail}
             </a>
           </div>
           <p>
@@ -41,20 +38,6 @@ export default function ContactPage() {
           </p>
         </section>
 
-        <div className="grid gap-3">
-          <Link
-            href="/privacy"
-            className="rounded-2xl bg-canton-green px-4 py-3 text-center text-sm font-black uppercase tracking-wide text-white"
-          >
-            Privacy Policy
-          </Link>
-          <Link
-            href="/"
-            className="rounded-2xl bg-canton-pill px-4 py-3 text-center text-sm font-black uppercase tracking-wide text-canton-ink"
-          >
-            Back Home
-          </Link>
-        </div>
       </div>
     </main>
   );

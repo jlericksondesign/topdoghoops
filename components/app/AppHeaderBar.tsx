@@ -4,6 +4,8 @@ import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
 
+import { appContactEmail } from "@/lib/contact";
+
 type AppHeaderBarProps = {
   dashboardHref?: string;
 };
@@ -71,7 +73,6 @@ export function AppHeaderBar({ dashboardHref = "/family" }: AppHeaderBarProps) {
                 >
                   Leaderboard
                 </Link>
-                <a href="mailto:hello@topdoghoops.com">Contact</a>
               </div>
             </div>
 
@@ -96,6 +97,16 @@ export function AppHeaderBar({ dashboardHref = "/family" }: AppHeaderBarProps) {
                   Rules
                 </Link>
               </div>
+            </div>
+
+            <div className="border-t-2 border-canton-cream-line pt-4">
+              <a
+                href={`mailto:${appContactEmail}`}
+                className="text-sm font-black uppercase tracking-wide text-canton-ink"
+                onClick={() => setIsMenuOpen(false)}
+              >
+                Contact Us
+              </a>
             </div>
           </div>
         </nav>

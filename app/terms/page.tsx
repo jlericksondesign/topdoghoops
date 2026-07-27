@@ -1,6 +1,5 @@
-import Link from "next/link";
-
 import { AppHeaderBar } from "@/components/app/AppHeaderBar";
+import { appContactEmail } from "@/lib/contact";
 
 export default function TermsPage() {
   return (
@@ -15,19 +14,31 @@ export default function TermsPage() {
             Terms of Use
           </h1>
           <p className="mt-3 text-sm font-bold leading-6 text-canton-muted">
-            Draft for family review. Final terms should be reviewed by the
-            league/operator and attorney before launch.
+            Last updated July 27, 2026. By using Top Dog Hoops, you agree to
+            these terms. If you are a parent or guardian, you agree on behalf of
+            yourself and any child/player profile you manage.
           </p>
         </div>
 
-        <section className="grid gap-5 text-sm font-semibold leading-6 text-canton-muted">
+        <section className="grid gap-5 rounded-2xl border-2 border-canton-ink bg-white px-5 py-5 text-sm font-semibold leading-6 text-canton-muted">
+          <div>
+            <h2 className="text-base font-black uppercase text-canton-ink">
+              Acceptance
+            </h2>
+            <p className="mt-2">
+              If you do not agree to these terms, do not use the app.
+            </p>
+          </div>
+
           <div>
             <h2 className="text-base font-black uppercase text-canton-ink">
               Purpose
             </h2>
             <p className="mt-2">
-              Top Dog Hoops is a youth basketball shot challenge app for
-              league administrators, parents, and players.
+              Top Dog Hoops is a youth basketball shot challenge app. It is
+              intended to let administrators run a challenge, parents manage
+              participation, and players submit shot totals through
+              parent-approved flows.
             </p>
           </div>
 
@@ -36,9 +47,11 @@ export default function TermsPage() {
               Parent Responsibilities
             </h2>
             <p className="mt-2">
-              Parents are responsible for reviewing invitations, confirming
-              player information, supervising paired-device use, and approving
-              or correcting child-submitted shot logs.
+              Parents and guardians are responsible for reviewing invitations,
+              confirming player information, approving or correcting
+              child-submitted shot logs, supervising a child&apos;s use of any
+              paired device, requesting deletion or correction when needed, and
+              making sure participation is appropriate for the child.
             </p>
           </div>
 
@@ -48,8 +61,35 @@ export default function TermsPage() {
             </h2>
             <p className="mt-2">
               Players may use child-safe paired device access to submit shot
-              totals. Players should not share pairing links, impersonate
-              another player, or try to access parent/admin screens.
+              totals. Players should not attempt to access parent or admin
+              screens, submit false totals, impersonate another player, or
+              share pairing links publicly.
+            </p>
+          </div>
+
+          <div>
+            <h2 className="text-base font-black uppercase text-canton-ink">
+              Admin Responsibilities
+            </h2>
+            <p className="mt-2">
+              Administrators are responsible for inviting only eligible
+              families, using admin access only for league operations,
+              protecting admin sign-in links and accounts, keeping exported data
+              secure, and following the privacy, deletion, retention, and
+              incident response practices approved for the app.
+            </p>
+          </div>
+
+          <div>
+            <h2 className="text-base font-black uppercase text-canton-ink">
+              Acceptable Use
+            </h2>
+            <p className="mt-2">
+              Users may not misuse sign-in links, invite links, or child pairing
+              links; attempt to access another family&apos;s data; interfere with
+              app security or operation; submit offensive, harmful, or
+              misleading content; or use the app for unauthorized commercial,
+              advertising, or data collection purposes.
             </p>
           </div>
 
@@ -74,14 +114,55 @@ export default function TermsPage() {
               is appropriate for their child.
             </p>
           </div>
+
+          <div>
+            <h2 className="text-base font-black uppercase text-canton-ink">
+              Privacy
+            </h2>
+            <p className="mt-2">
+              Use of Top Dog Hoops is also governed by the Privacy Policy. The
+              Privacy Policy describes data collection, parent rights,
+              child/player information, and deletion requests.
+            </p>
+          </div>
+
+          <div>
+            <h2 className="text-base font-black uppercase text-canton-ink">
+              Availability
+            </h2>
+            <p className="mt-2">
+              The app may be unavailable or changed from time to time. CYBA may
+              modify, pause, or end the challenge or app access.
+            </p>
+          </div>
+
+          <div>
+            <h2 className="text-base font-black uppercase text-canton-ink">
+              Changes To These Terms
+            </h2>
+            <p className="mt-2">
+              Top Dog Hoops may update these terms. Material changes should be
+              communicated to parents and administrators as appropriate.
+            </p>
+          </div>
+
+          <div>
+            <h2 className="text-base font-black uppercase text-canton-ink">
+              Contact
+            </h2>
+            <p className="mt-2">
+              Questions about these terms can be sent to{" "}
+              <a
+                href={`mailto:${appContactEmail}`}
+                className="font-black text-canton-green underline underline-offset-4"
+              >
+                {appContactEmail}
+              </a>
+              .
+            </p>
+          </div>
         </section>
 
-        <Link
-          href="/privacy"
-          className="rounded-2xl bg-canton-green px-4 py-3 text-center text-sm font-black uppercase tracking-wide text-white"
-        >
-          Read Privacy Policy
-        </Link>
       </div>
     </main>
   );

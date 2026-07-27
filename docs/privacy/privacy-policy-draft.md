@@ -6,12 +6,11 @@ Attorney review required before launch. This draft is written to be plain-Englis
 
 ## Operator and Contact
 
-Top Dog Hoops is operated by `[LEGAL/ORGANIZATION NAME]` for the purpose of running a youth basketball shot challenge.
+Top Dog Hoops is operated by CYBA for the purpose of running a youth basketball shot challenge.
 
 Privacy contact:
 
-* Email: `[PRIVACY CONTACT EMAIL]`
-* Mailing address: `[OPTIONAL MAILING ADDRESS]`
+* Email: hello@topdoghoops.com
 
 ## What Top Dog Hoops Does
 
@@ -81,7 +80,7 @@ Parents may request to:
 * Revoke consent for continued participation.
 * Delete their child's/player's personal information.
 
-Requests should be sent to `[PRIVACY CONTACT EMAIL]`. Before disclosing, changing, or deleting child/player information, Top Dog Hoops will take reasonable steps to verify that the requester is the linked parent or guardian.
+Requests should be sent to hello@topdoghoops.com. Before disclosing, changing, or deleting child/player information, Top Dog Hoops will take reasonable steps to verify that the requester is the linked parent or guardian.
 
 If a parent revokes consent or requests deletion, the child/player may no longer be able to participate in the challenge if the deleted information is necessary to operate the service.
 
@@ -121,4 +120,5 @@ If the privacy practices materially change, Top Dog Hoops should update this pol
 ## Review Status
 
 Status: Draft for operator and attorney review.
+
 
