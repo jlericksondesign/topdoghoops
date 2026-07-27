@@ -5,35 +5,14 @@ import {
   isLegalReviewAccessValid,
   LEGAL_REVIEW_ACCESS_COOKIE,
 } from "@/lib/legal-review-auth";
+import {
+  legalReviewFieldLabels,
+  legalReviewFieldNames,
+  type LegalReviewFieldName,
+} from "@/lib/legal-review-fields";
 import { createSupabaseAdminClient } from "@/lib/supabase/server";
 
-const fieldLabels = {
-  reviewer_name: "Reviewer Name",
-  reviewer_email: "Reviewer Email",
-  reviewer_role: "Reviewer Role",
-  approval_status: "Review Status",
-  operator_legal_name: "Legal/Operator Name",
-  public_program_name: "Public Program Name",
-  league_name: "League/Organization Name",
-  league_location: "League Location/State",
-  contact_email: "General Contact Email",
-  privacy_email: "Privacy Request Email",
-  deletion_email: "Deletion Request Email",
-  admin_owner: "Primary Admin Owner",
-  backup_owner: "Backup Owner",
-  retention_preference: "Data Retention Preference",
-  incident_contact: "Incident Response Contact",
-  rules_content: "Challenge Rules Content",
-  sponsor_language: "Sponsor Language",
-  legal_notes: "Additional Notes",
-  reviewed_privacy: "Reviewed Privacy Policy",
-  reviewed_terms: "Reviewed Terms Of Use",
-  reviewed_consent: "Reviewed Consent/Deletion Process",
-} as const;
-
-type FieldName = keyof typeof fieldLabels;
-
-function normalizeFormValue(formData: FormData, field: FieldName) {
+function normalizeFormValue(formData: FormData, field: LegalReviewFieldName) {
   return String(formData.get(field) ?? "").trim();
 }
 
@@ -76,8 +55,8 @@ export async function POST(request: NextRequest) {
   }
 
   const answers = Object.fromEntries(
-    (Object.keys(fieldLabels) as FieldName[]).map((field) => [
-      fieldLabels[field],
+    legalReviewFieldNames.map((field) => [
+      legalReviewFieldLabels[field],
       normalizeFormValue(formData, field),
     ]),
   );

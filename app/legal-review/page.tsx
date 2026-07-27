@@ -6,6 +6,12 @@ import {
   isLegalReviewAccessValid,
   LEGAL_REVIEW_ACCESS_COOKIE,
 } from "@/lib/legal-review-auth";
+import {
+  legalReviewFieldLabels,
+  legalReviewFieldNames,
+  type LegalReviewFieldName,
+} from "@/lib/legal-review-fields";
+import { createSupabaseAdminClient } from "@/lib/supabase/server";
 
 const consolidatedLegalDocUrl =
   process.env.LEGAL_REVIEW_DOC_URL ??
@@ -67,11 +73,13 @@ type LegalReviewPageProps = {
 function TextInput({
   label,
   name,
+  defaultValue = "",
   required = false,
   type = "text",
 }: {
   label: string;
-  name: string;
+  name: LegalReviewFieldName;
+  defaultValue?: string;
   required?: boolean;
   type?: "email" | "text";
 }) {
@@ -84,6 +92,7 @@ function TextInput({
         required={required}
         type={type}
         name={name}
+        defaultValue={defaultValue}
         className="h-12 rounded-xl border-2 border-canton-cream-line bg-canton-cream px-3 text-sm font-bold text-canton-ink outline-none focus:border-canton-green"
       />
     </label>
@@ -93,10 +102,12 @@ function TextInput({
 function TextArea({
   label,
   name,
+  defaultValue = "",
   rows = 4,
 }: {
   label: string;
-  name: string;
+  name: LegalReviewFieldName;
+  defaultValue?: string;
   rows?: number;
 }) {
   return (
@@ -106,10 +117,54 @@ function TextArea({
       </span>
       <textarea
         name={name}
+        defaultValue={defaultValue}
         rows={rows}
         className="rounded-xl border-2 border-canton-cream-line bg-canton-cream px-3 py-3 text-sm font-bold text-canton-ink outline-none focus:border-canton-green"
       />
     </label>
+  );
+}
+
+type LegalReviewAnswers = Partial<Record<LegalReviewFieldName, string>>;
+
+type LegalReviewSubmissionRow = {
+  answers: Record<string, unknown> | null;
+};
+
+async function getLatestLegalReviewAnswers(): Promise<LegalReviewAnswers> {
+  const supabase = createSupabaseAdminClient();
+
+  if (!supabase) {
+    return {};
+  }
+
+  const { data, error } = await supabase
+    .from("legal_review_submissions")
+    .select("answers")
+    .order("created_at", { ascending: false })
+    .limit(100);
+
+  if (error || !data) {
+    console.error("Legal review saved answer lookup failed", {
+      error: error?.message,
+    });
+    return {};
+  }
+
+  return (data as LegalReviewSubmissionRow[]).reduce<LegalReviewAnswers>(
+    (prefill, submission) => {
+      legalReviewFieldNames.forEach((fieldName) => {
+        const label = legalReviewFieldLabels[fieldName];
+        const value = String(submission.answers?.[label] ?? "").trim();
+
+        if (value && !prefill[fieldName]) {
+          prefill[fieldName] = value;
+        }
+      });
+
+      return prefill;
+    },
+    {},
   );
 }
 
@@ -121,6 +176,7 @@ export default async function LegalReviewPage({
   const hasAccess = isLegalReviewAccessValid(
     cookieStore.get(LEGAL_REVIEW_ACCESS_COOKIE)?.value,
   );
+  const savedAnswers = hasAccess ? await getLatestLegalReviewAnswers() : {};
 
   return (
     <main className="flex min-h-dvh flex-col bg-canton-cream-grid">
@@ -136,7 +192,8 @@ export default async function LegalReviewPage({
           <p className="mt-3 text-sm font-bold leading-6 text-canton-muted">
             Complete the missing launch details below. This private page is not
             linked from the app and should be removed after launch review is
-            complete.
+            complete. Fill in only the parts you know; saved answers from prior
+            reviewers will appear in the form automatically.
           </p>
         </section>
 
@@ -220,22 +277,65 @@ export default async function LegalReviewPage({
             <h2 className="font-heading text-xl font-black uppercase text-canton-ink">
               Organization
             </h2>
-            <TextInput label="Legal/Operator Name" name="operator_legal_name" />
-            <TextInput label="Public Program Name" name="public_program_name" />
-            <TextInput label="League/Organization Name" name="league_name" />
-            <TextInput label="League Location/State" name="league_location" />
+            <TextInput
+              label="Legal/Operator Name"
+              name="operator_legal_name"
+              defaultValue={savedAnswers.operator_legal_name}
+            />
+            <TextInput
+              label="Public Program Name"
+              name="public_program_name"
+              defaultValue={savedAnswers.public_program_name}
+            />
+            <TextInput
+              label="League/Organization Name"
+              name="league_name"
+              defaultValue={savedAnswers.league_name}
+            />
+            <TextInput
+              label="League Location/State"
+              name="league_location"
+              defaultValue={savedAnswers.league_location}
+            />
           </div>
 
           <div className="grid gap-3">
             <h2 className="font-heading text-xl font-black uppercase text-canton-ink">
               Contacts
             </h2>
-            <TextInput label="General Contact Email" name="contact_email" type="email" />
-            <TextInput label="Privacy Request Email" name="privacy_email" type="email" />
-            <TextInput label="Deletion Request Email" name="deletion_email" type="email" />
-            <TextInput label="Primary Admin Owner" name="admin_owner" />
-            <TextInput label="Backup Owner" name="backup_owner" />
-            <TextInput label="Incident Response Contact" name="incident_contact" />
+            <TextInput
+              label="General Contact Email"
+              name="contact_email"
+              type="email"
+              defaultValue={savedAnswers.contact_email}
+            />
+            <TextInput
+              label="Privacy Request Email"
+              name="privacy_email"
+              type="email"
+              defaultValue={savedAnswers.privacy_email}
+            />
+            <TextInput
+              label="Deletion Request Email"
+              name="deletion_email"
+              type="email"
+              defaultValue={savedAnswers.deletion_email}
+            />
+            <TextInput
+              label="Primary Admin Owner"
+              name="admin_owner"
+              defaultValue={savedAnswers.admin_owner}
+            />
+            <TextInput
+              label="Backup Owner"
+              name="backup_owner"
+              defaultValue={savedAnswers.backup_owner}
+            />
+            <TextInput
+              label="Incident Response Contact"
+              name="incident_contact"
+              defaultValue={savedAnswers.incident_contact}
+            />
           </div>
 
           <div className="grid gap-3">
@@ -245,21 +345,25 @@ export default async function LegalReviewPage({
             <TextArea
               label="Data Retention Preference"
               name="retention_preference"
+              defaultValue={savedAnswers.retention_preference}
               rows={3}
             />
             <TextArea
               label="Final Challenge Rules"
               name="rules_content"
+              defaultValue={savedAnswers.rules_content}
               rows={6}
             />
             <TextArea
               label="Sponsor Language"
               name="sponsor_language"
+              defaultValue={savedAnswers.sponsor_language}
               rows={3}
             />
             <TextArea
               label="Additional Legal/Privacy Notes"
               name="legal_notes"
+              defaultValue={savedAnswers.legal_notes}
               rows={5}
             />
           </div>
@@ -275,7 +379,9 @@ export default async function LegalReviewPage({
               <select
                 name="approval_status"
                 className="h-12 rounded-xl border-2 border-canton-cream-line bg-canton-cream px-3 text-sm font-bold text-canton-ink outline-none focus:border-canton-green"
-                defaultValue="needs_follow_up"
+                defaultValue={
+                  savedAnswers.approval_status || "needs_follow_up"
+                }
               >
                 <option value="needs_follow_up">Needs follow-up</option>
                 <option value="approved_with_edits">Approved with edits</option>
