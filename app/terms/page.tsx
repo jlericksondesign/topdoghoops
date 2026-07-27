@@ -26,7 +26,10 @@ export default function TermsPage() {
               Acceptance
             </h2>
             <p className="mt-2">
-              If you do not agree to these terms, do not use the app.
+              By using Top Dog Hoops, you agree to these Terms of Use. If you
+              are a parent or guardian, you agree on behalf of yourself and any
+              child/player profile you manage. If you do not agree, do not use
+              the app.
             </p>
           </div>
 
@@ -46,13 +49,14 @@ export default function TermsPage() {
             <h2 className="text-base font-black uppercase text-canton-ink">
               Parent Responsibilities
             </h2>
-            <p className="mt-2">
-              Parents and guardians are responsible for reviewing invitations,
-              confirming player information, approving or correcting
-              child-submitted shot logs, supervising a child&apos;s use of any
-              paired device, requesting deletion or correction when needed, and
-              making sure participation is appropriate for the child.
-            </p>
+            <ul className="mt-2 grid list-disc gap-1 pl-5">
+              <li>Reviewing invitations before accepting.</li>
+              <li>Confirming player information is accurate.</li>
+              <li>Approving or correcting child-submitted shot logs.</li>
+              <li>Supervising a child&apos;s use of any paired device.</li>
+              <li>Requesting deletion or correction when needed.</li>
+              <li>Making sure participation is appropriate for the child.</li>
+            </ul>
           </div>
 
           <div>
@@ -71,26 +75,32 @@ export default function TermsPage() {
             <h2 className="text-base font-black uppercase text-canton-ink">
               Admin Responsibilities
             </h2>
-            <p className="mt-2">
-              Administrators are responsible for inviting only eligible
-              families, using admin access only for league operations,
-              protecting admin sign-in links and accounts, keeping exported data
-              secure, and following the privacy, deletion, retention, and
-              incident response practices approved for the app.
-            </p>
+            <ul className="mt-2 grid list-disc gap-1 pl-5">
+              <li>Inviting only eligible families.</li>
+              <li>Using admin access only for league operations.</li>
+              <li>Protecting admin sign-in links and accounts.</li>
+              <li>Keeping exported data secure.</li>
+              <li>
+                Following the data retention, deletion, privacy, and incident
+                response practices approved for the app.
+              </li>
+            </ul>
           </div>
 
           <div>
             <h2 className="text-base font-black uppercase text-canton-ink">
               Acceptable Use
             </h2>
-            <p className="mt-2">
-              Users may not misuse sign-in links, invite links, or child pairing
-              links; attempt to access another family&apos;s data; interfere with
-              app security or operation; submit offensive, harmful, or
-              misleading content; or use the app for unauthorized commercial,
-              advertising, or data collection purposes.
-            </p>
+            <ul className="mt-2 grid list-disc gap-1 pl-5">
+              <li>Misuse sign-in links, invite links, or child pairing links.</li>
+              <li>Attempt to access another family&apos;s data.</li>
+              <li>Interfere with the app&apos;s security or operation.</li>
+              <li>Submit offensive, harmful, or misleading content.</li>
+              <li>
+                Use the app for unauthorized commercial, advertising, or data
+                collection purposes.
+              </li>
+            </ul>
           </div>
 
           <div>
@@ -99,8 +109,9 @@ export default function TermsPage() {
             </h2>
             <p className="mt-2">
               Leaderboards and totals are based on approved shot submissions.
-              The league/operator may correct errors or remove improper
-              submissions to keep the challenge fair.
+              The league/operator may correct errors, remove improper
+              submissions, or adjust challenge results when needed to keep the
+              challenge fair.
             </p>
           </div>
 
@@ -109,9 +120,10 @@ export default function TermsPage() {
               Safety
             </h2>
             <p className="mt-2">
-              Top Dog Hoops is not a medical, coaching, emergency, or safety
-              service. Parents and guardians decide whether basketball activity
-              is appropriate for their child.
+              Top Dog Hoops is not a safety, medical, coaching, or emergency
+              service. Parents and guardians are responsible for deciding
+              whether basketball activity is safe and appropriate for their
+              child.
             </p>
           </div>
 

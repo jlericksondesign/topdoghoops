@@ -23,11 +23,13 @@ export default function PrivacyPage() {
         <section className="grid gap-5 rounded-2xl border-2 border-canton-ink bg-white px-5 py-5 text-sm font-semibold leading-6 text-canton-muted">
           <div>
             <h2 className="text-base font-black uppercase text-canton-ink">
-              Contact
+              Operator And Contact
             </h2>
             <p className="mt-2">
-              Questions, privacy requests, correction requests, consent
-              revocation, and deletion requests can be sent to{" "}
+              Top Dog Hoops is operated by CYBA for the purpose of running a
+              youth basketball shot challenge. Questions, privacy requests,
+              correction requests, consent revocation, and deletion requests can
+              be sent to{" "}
               <a
                 href={`mailto:${appContactEmail}`}
                 className="font-black text-canton-green underline underline-offset-4"
@@ -54,28 +56,56 @@ export default function PrivacyPage() {
             <h2 className="text-base font-black uppercase text-canton-ink">
               Information We Collect
             </h2>
-            <ul className="mt-2 grid gap-2">
-              <li>
-                Parent and administrator information, including name, email
-                address, sign-in status, invite status, and support actions.
-              </li>
-              <li>
-                Player information, including first name, last initial, grade,
-                division or league grouping, jersey number if displayed, and the
-                linked parent/player profile.
-              </li>
-              <li>
-                Paired-device information, including a revocable pairing token,
-                the linked player profile, daily shot submissions, basket
-                counts, selected bonuses, and basic technical data needed for
-                security and app operation.
-              </li>
-              <li>
-                Challenge information, including approved shot totals,
-                participation totals, and leaderboard rank based on approved
-                submissions.
-              </li>
-            </ul>
+            <div className="mt-2 grid gap-4">
+              <div>
+                <h3 className="text-sm font-black uppercase text-canton-ink">
+                  From Parents And Administrators
+                </h3>
+                <ul className="mt-2 grid list-disc gap-1 pl-5">
+                  <li>Name.</li>
+                  <li>Email address.</li>
+                  <li>Sign-in and invitation status.</li>
+                  <li>Admin invite and support actions.</li>
+                </ul>
+              </div>
+
+              <div>
+                <h3 className="text-sm font-black uppercase text-canton-ink">
+                  About Players
+                </h3>
+                <ul className="mt-2 grid list-disc gap-1 pl-5">
+                  <li>First name.</li>
+                  <li>Last initial.</li>
+                  <li>Grade.</li>
+                  <li>Division or league grouping.</li>
+                  <li>Jersey number, if provided or displayed.</li>
+                  <li>Parent-linked player profile.</li>
+                </ul>
+              </div>
+
+              <div>
+                <h3 className="text-sm font-black uppercase text-canton-ink">
+                  From Child Paired Devices
+                </h3>
+                <ul className="mt-2 grid list-disc gap-1 pl-5">
+                  <li>A revocable device pairing token.</li>
+                  <li>The linked player profile needed for the child-safe experience.</li>
+                  <li>Daily shot submissions, including basket count and selected bonuses.</li>
+                  <li>Basic technical data needed for security, logs, and app operation.</li>
+                </ul>
+              </div>
+
+              <div>
+                <h3 className="text-sm font-black uppercase text-canton-ink">
+                  Challenge And Leaderboard Data
+                </h3>
+                <ul className="mt-2 grid list-disc gap-1 pl-5">
+                  <li>Approved shot totals.</li>
+                  <li>Challenge participation totals.</li>
+                  <li>Leaderboard rank based on approved submissions.</li>
+                </ul>
+              </div>
+            </div>
           </div>
 
           <div>
@@ -112,10 +142,15 @@ export default function PrivacyPage() {
               Top Dog Hoops does not sell player or parent information.
               Information may be shared with service providers needed to operate
               the app, such as hosting, database, authentication, and email
-              delivery providers. Approved leaderboard totals may be visible to
-              other app users in limited form, such as first name and last
-              initial. Pending shot submissions are intended to be visible only
-              to the linked parent or guardian and authorized administrators.
+              delivery providers. Current planned services include Vercel,
+              Supabase, and Resend.
+            </p>
+            <p className="mt-2">
+              Approved leaderboard totals may be visible to other app users in
+              limited form, such as first name and last initial, unless a parent
+              and the league approve a different display format. Pending shot
+              submissions should only be visible to the linked parent or
+              guardian and authorized administrators.
             </p>
           </div>
 
@@ -148,7 +183,7 @@ export default function PrivacyPage() {
 
           <div>
             <h2 className="text-base font-black uppercase text-canton-ink">
-              Children&apos;s Privacy
+              Children&apos;s Privacy And COPPA
             </h2>
             <p className="mt-2">
               Top Dog Hoops is designed as a parent-mediated app for youth
@@ -157,6 +192,12 @@ export default function PrivacyPage() {
               rather than child accounts, and child submissions stay limited to
               challenge activity that requires parent approval before appearing
               in public totals.
+            </p>
+            <p className="mt-2">
+              Top Dog Hoops may involve children under 13. Parent-managed
+              invitation, paired-device access, limited child/player
+              information, and parent approval are intended to support a
+              privacy-conscious youth sports experience.
             </p>
           </div>
 
@@ -168,7 +209,8 @@ export default function PrivacyPage() {
               Top Dog Hoops uses security measures such as passwordless parent
               access, admin-only access controls, revocable child device tokens,
               hashed invite and access tokens, database access controls, and
-              limited access to production systems.
+              limited access to production systems. Administrators should use
+              strong access controls, including MFA where available.
             </p>
           </div>
 
