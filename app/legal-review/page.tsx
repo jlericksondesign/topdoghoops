@@ -7,6 +7,48 @@ import {
   LEGAL_REVIEW_ACCESS_COOKIE,
 } from "@/lib/legal-review-auth";
 
+const consolidatedLegalDocUrl =
+  process.env.LEGAL_REVIEW_DOC_URL ??
+  "https://docs.google.com/document/d/1RQoPARlDVkTeb01N-oDAVItBH9KkeJlebLGCc5Pb0ew/edit?usp=sharing";
+
+const reviewDocuments = [
+  {
+    id: "privacy",
+    title: "Privacy Policy Draft",
+    description: "Review data collection, parent rights, privacy requests, and child/player data handling.",
+    envUrl: process.env.LEGAL_REVIEW_PRIVACY_DOC_URL ?? consolidatedLegalDocUrl,
+    fallbackHref: "/privacy",
+  },
+  {
+    id: "terms",
+    title: "Terms Of Use Draft",
+    description: "Review parent responsibilities, player use, safety language, and challenge result rules.",
+    envUrl: process.env.LEGAL_REVIEW_TERMS_DOC_URL ?? consolidatedLegalDocUrl,
+    fallbackHref: "/terms",
+  },
+  {
+    id: "consent",
+    title: "Consent And Deletion Process",
+    description: "Review parent consent, consent revocation, deletion requests, and COPPA-related workflow.",
+    envUrl: process.env.LEGAL_REVIEW_CONSENT_DOC_URL ?? consolidatedLegalDocUrl,
+    fallbackHref: "/privacy",
+  },
+  {
+    id: "rules",
+    title: "Challenge Rules",
+    description: "Review the rules players and parents must explicitly agree to before shot logging or approval.",
+    envUrl: process.env.LEGAL_REVIEW_RULES_DOC_URL,
+    fallbackHref: "/rules",
+  },
+];
+
+const reviewDocumentHrefById = Object.fromEntries(
+  reviewDocuments.map((document) => [
+    document.id,
+    document.envUrl?.trim() || document.fallbackHref,
+  ]),
+);
+
 export const metadata: Metadata = {
   title: "Legal Review Intake | Top Dog Hoops",
   robots: {
@@ -242,27 +284,89 @@ export default async function LegalReviewPage({
             </label>
 
             {[
-              ["reviewed_privacy", "I reviewed the Privacy Policy draft."],
-              ["reviewed_terms", "I reviewed the Terms of Use draft."],
-              [
-                "reviewed_consent",
-                "I reviewed the parent consent and deletion request process.",
-              ],
-            ].map(([name, label]) => (
+              {
+                name: "reviewed_privacy",
+                href: reviewDocumentHrefById.privacy,
+                text: "I reviewed the Privacy Policy draft.",
+                linkText: "Privacy Policy draft",
+              },
+              {
+                name: "reviewed_terms",
+                href: reviewDocumentHrefById.terms,
+                text: "I reviewed the Terms of Use draft.",
+                linkText: "Terms of Use draft",
+              },
+              {
+                name: "reviewed_consent",
+                href: reviewDocumentHrefById.consent,
+                text: "I reviewed the parent consent and deletion request process.",
+                linkText: "parent consent and deletion request process",
+              },
+            ].map((item) => (
               <label
-                key={name}
+                key={item.name}
                 className="flex items-start gap-3 text-sm font-bold leading-5 text-canton-ink"
               >
                 <input
                   type="checkbox"
-                  name={name}
+                  name={item.name}
                   value="Yes"
                   className="mt-0.5 h-5 w-5 shrink-0 accent-canton-green"
                 />
-                {label}
+                <span>
+                  {item.text.split(item.linkText)[0]}
+                  <a
+                    href={item.href}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="underline underline-offset-4"
+                  >
+                    {item.linkText}
+                  </a>
+                  {item.text.split(item.linkText)[1]}
+                </span>
               </label>
             ))}
           </div>
+
+          <section className="grid gap-3 rounded-2xl border-2 border-canton-cream-line bg-canton-cream px-4 py-4">
+            <div>
+              <h2 className="font-heading text-xl font-black uppercase text-canton-ink">
+                Review Documents
+              </h2>
+              <p className="mt-2 text-sm font-semibold leading-6 text-canton-muted">
+                Open these drafts and leave comments or suggested edits before
+                submitting this form.
+              </p>
+            </div>
+
+            <div className="grid gap-3">
+              {reviewDocuments.map((document) => {
+                const href = document.envUrl?.trim() || document.fallbackHref;
+                const isMarkupDoc = Boolean(document.envUrl?.trim());
+
+                return (
+                  <a
+                    key={document.title}
+                    href={href}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="block rounded-xl border-2 border-canton-ink bg-white px-4 py-3"
+                  >
+                    <span className="block text-sm font-black uppercase tracking-wide text-canton-ink">
+                      {document.title}
+                    </span>
+                    <span className="mt-1 block text-xs font-bold leading-5 text-canton-muted">
+                      {document.description}
+                    </span>
+                    <span className="mt-2 block text-xs font-black uppercase text-canton-green">
+                      {isMarkupDoc ? "Open editable review doc" : "Open live draft page"}
+                    </span>
+                  </a>
+                );
+              })}
+            </div>
+          </section>
 
           <button
             type="submit"
