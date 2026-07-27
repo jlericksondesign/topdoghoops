@@ -1,6 +1,7 @@
 import Link from "next/link";
 
 import { AppHeaderBar } from "@/components/app/AppHeaderBar";
+import { challengeRules } from "@/lib/challenge-rules";
 
 export default function RulesPage() {
   return (
@@ -12,16 +13,15 @@ export default function RulesPage() {
             Top Dog Hoops
           </p>
           <h1 className="mt-2 text-3xl font-black uppercase leading-tight text-canton-ink">
-            Challenge Rules
+            Official Rules
           </h1>
         </div>
 
         <section className="rounded-2xl border-2 border-canton-ink bg-white px-5 py-5">
           <ul className="grid gap-4 text-sm font-semibold leading-6 text-canton-muted">
-            <li>Log honest made shots only.</li>
-            <li>Use the friend bonus only when you practiced with someone.</li>
-            <li>Parent approval is required before shots count publicly.</li>
-            <li>Practice safely with a clear space and age-appropriate hoop.</li>
+            {challengeRules.map((rule) => (
+              <li key={rule}>{rule}</li>
+            ))}
           </ul>
         </section>
 

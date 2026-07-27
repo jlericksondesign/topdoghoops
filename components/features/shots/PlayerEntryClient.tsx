@@ -12,6 +12,7 @@ import { BasketballGraphic } from "@/components/features/shots/BasketballGraphic
 import { FriendBonusToggle } from "@/components/features/shots/FriendBonusToggle";
 import { ScoreIncrementGrid } from "@/components/features/shots/ScoreIncrementGrid";
 import { SubmitScoreButton } from "@/components/features/shots/SubmitScoreButton";
+import { challengeRules } from "@/lib/challenge-rules";
 
 type PlayerEntryClientProps = {
   playerFirstName: string;
@@ -125,8 +126,11 @@ export function PlayerEntryClient({
         storageKey="topdog-player-entry-rules"
         title="Shot Log Rules"
       >
-        Log honest made shots only. Use the friend bonus only when you practiced
-        with someone. A parent must approve shots before they count publicly.
+        <ul className="grid gap-3">
+          {challengeRules.map((rule) => (
+            <li key={rule}>{rule}</li>
+          ))}
+        </ul>
       </FirstVisitDisclosure>
 
       <div className="relative flex h-[392px] shrink-0 flex-col items-center px-11">
