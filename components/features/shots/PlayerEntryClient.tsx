@@ -5,6 +5,7 @@ import Link from "next/link";
 
 import { AppHeaderBar } from "@/components/app/AppHeaderBar";
 import { FirstVisitDisclosure } from "@/components/app/FirstVisitDisclosure";
+import { Button } from "@/components/ui/button";
 import { MascotRevealBadge } from "@/components/features/rewards/MascotRevealBadge";
 import { ArcadeScoreDisplay } from "@/components/features/shots/ArcadeScoreDisplay";
 import { BasketballGraphic } from "@/components/features/shots/BasketballGraphic";
@@ -131,7 +132,7 @@ export function PlayerEntryClient({
       <div
         className={`relative flex shrink-0 flex-col items-center px-11 ${
           isRevealed
-            ? "min-h-[520px] justify-end pb-12 pt-14"
+            ? "min-h-[520px] justify-center py-10"
             : "min-h-[440px] pt-12"
         }`}
       >
@@ -209,12 +210,9 @@ export function PlayerEntryClient({
             <br />
             {playerFirstName}!
           </h1>
-          <Link
-            href="/leaderboards?from=player"
-            className="w-full rounded-2xl border-2 border-white bg-canton-orange py-4 text-center text-base font-bold uppercase tracking-wide text-white shadow-[0_4px_0_rgba(0,0,0,0.15)]"
-          >
-            Leaderboard
-          </Link>
+          <Button asChild variant="cantonOrange" size="cantonCta">
+            <Link href="/leaderboards?from=player">Leaderboard</Link>
+          </Button>
         </div>
       </div>
     </main>

@@ -17,12 +17,19 @@ const buttonVariants = cva(
           "bg-secondary text-secondary-foreground hover:bg-secondary/80",
         ghost: "hover:bg-accent hover:text-accent-foreground",
         link: "text-primary underline-offset-4 hover:underline",
+        cantonGreen:
+          "border-2 border-white bg-canton-green font-bold uppercase tracking-wide text-white shadow-[0_4px_0_rgba(0,0,0,0.15)] hover:bg-canton-green",
+        cantonOrange:
+          "border-2 border-white bg-canton-orange font-bold uppercase tracking-wide text-white shadow-[0_4px_0_rgba(0,0,0,0.15)] hover:bg-canton-orange",
+        cantonInk:
+          "border-2 border-white bg-canton-ink font-bold uppercase tracking-wide text-white shadow-[0_4px_0_rgba(0,0,0,0.15)] hover:bg-canton-ink",
       },
       size: {
         default: "h-10 px-4 py-2",
         sm: "h-9 rounded-md px-3",
         lg: "h-11 rounded-md px-8",
         icon: "h-10 w-10",
+        cantonCta: "h-auto w-full rounded-2xl px-4 py-4 text-base",
       },
     },
     defaultVariants: {

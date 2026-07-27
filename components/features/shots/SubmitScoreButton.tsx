@@ -1,3 +1,5 @@
+import { Button } from "@/components/ui/button";
+
 type SubmitScoreButtonProps = {
   onClick: () => void;
   disabled?: boolean;
@@ -10,13 +12,14 @@ export function SubmitScoreButton({
   label = "Submit",
 }: SubmitScoreButtonProps) {
   return (
-    <button
+    <Button
       type="button"
       onClick={onClick}
       disabled={disabled}
-      className="w-full rounded border-2 border-white bg-canton-ink py-4 text-center text-base font-bold uppercase tracking-wide text-white disabled:opacity-40"
+      variant="cantonInk"
+      size="cantonCta"
     >
       {label}
-    </button>
+    </Button>
   );
 }
