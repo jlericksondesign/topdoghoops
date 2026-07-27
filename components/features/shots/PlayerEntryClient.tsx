@@ -119,7 +119,7 @@ export function PlayerEntryClient({
   }
 
   return (
-    <main className="flex h-dvh min-h-[760px] flex-col overflow-hidden bg-canton-white-grid">
+    <main className="flex min-h-dvh flex-col bg-canton-white-grid">
       <AppHeaderBar dashboardHref="/player" />
       <FirstVisitDisclosure
         storageKey="topdog-player-entry-rules"
@@ -158,7 +158,7 @@ export function PlayerEntryClient({
         )}
       </div>
 
-      <div className="relative flex min-h-0 flex-1 flex-col items-center bg-canton-tan px-11 pb-[calc(1.5rem+env(safe-area-inset-bottom))]">
+      <div className="relative flex min-h-[420px] flex-1 flex-col items-center bg-canton-tan px-11 pb-[calc(1.5rem+env(safe-area-inset-bottom))]">
         <div
           className={`flex h-full w-full max-w-[314px] flex-col items-center transition-opacity duration-500 ${
             isEntry ? "opacity-100" : "pointer-events-none opacity-0"
@@ -168,7 +168,7 @@ export function PlayerEntryClient({
             <ScoreIncrementGrid value={score} onChange={setScore} />
           </div>
 
-          <div className="mt-[120px] flex w-full flex-col items-center gap-5">
+          <div className="mt-[60px] flex w-full flex-col items-center gap-5">
             <FriendBonusToggle
               checked={shotWithFriend}
               onCheckedChange={setShotWithFriend}

@@ -157,8 +157,6 @@ export default async function PlayerHomePage() {
           />
         </div>
 
-        <PlayerSubmissionHistory entries={submissionHistory} />
-
         <div className="flex w-full flex-col gap-4">
           <Link
             href="/player-entry"
@@ -173,6 +171,8 @@ export default async function PlayerHomePage() {
             Leaderboard
           </Link>
         </div>
+
+        <PlayerSubmissionHistory entries={submissionHistory} />
       </div>
     </main>
   );
