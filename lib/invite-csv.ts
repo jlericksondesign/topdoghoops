@@ -33,6 +33,28 @@ export const INVITE_CSV_TEMPLATE = `${INVITE_CSV_HEADERS.join(",")}
 parent@example.com,,Maceo,J,5,elementary
 `;
 
+const requiredCsvHeaders = [
+  "parent_email",
+  "player_first_name",
+  "player_last_initial",
+  "grade",
+] as const;
+
+const csvHeaderAliases: Record<(typeof INVITE_CSV_HEADERS)[number], string[]> =
+  {
+    parent_email: ["parent_email", "guardian email", "parent email"],
+    parent_name: ["parent_name", "parent name", "guardian name"],
+    player_first_name: ["player_first_name", "first name", "player first name"],
+    player_last_initial: [
+      "player_last_initial",
+      "last name",
+      "last initial",
+      "player last initial",
+    ],
+    grade: ["grade"],
+    division: ["division"],
+  };
+
 const validDivisions = [
   "elementary",
   "middle_school",
@@ -84,7 +106,7 @@ function normalizeCsvText(csvText: string) {
 }
 
 function normalizeHeader(header: string) {
-  return header.trim().toLowerCase();
+  return header.trim().toLowerCase().replaceAll("_", " ");
 }
 
 function isEmail(value: string) {
@@ -183,8 +205,10 @@ export function parseInviteCsv(csvText: string): InviteCsvPreviewRow[] {
   }
 
   const headers = parseCsvLine(lines[0]).map(normalizeHeader);
-  const missingHeaders = INVITE_CSV_HEADERS.filter(
-    (header) => !headers.includes(header),
+  const getColumnIndex = (header: (typeof INVITE_CSV_HEADERS)[number]) =>
+    csvHeaderAliases[header].findIndex((alias) => headers.includes(alias));
+  const missingHeaders = requiredCsvHeaders.filter(
+    (header) => getColumnIndex(header) === -1,
   );
 
   if (missingHeaders.length > 0) {
@@ -203,8 +227,14 @@ export function parseInviteCsv(csvText: string): InviteCsvPreviewRow[] {
     const values = INVITE_CSV_HEADERS.reduce<
       Partial<Record<keyof InviteCsvInput, string>>
     >((result, header) => {
-      const columnIndex = headers.indexOf(header);
-      result[header] = rowValues[columnIndex] ?? "";
+      const aliasIndex = csvHeaderAliases[header].findIndex((alias) =>
+        headers.includes(alias),
+      );
+      const columnIndex =
+        aliasIndex === -1
+          ? -1
+          : headers.indexOf(csvHeaderAliases[header][aliasIndex]);
+      result[header] = columnIndex === -1 ? "" : (rowValues[columnIndex] ?? "");
       return result;
     }, {});
 

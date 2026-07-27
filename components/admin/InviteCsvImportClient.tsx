@@ -57,6 +57,7 @@ export function InviteCsvImportClient() {
 
       const result = (await response.json()) as {
         imported?: number;
+        skippedDuplicates?: number;
         error?: string;
       };
 
@@ -66,7 +67,9 @@ export function InviteCsvImportClient() {
 
       setCsvText("");
       setMessage(
-        `${result.imported ?? 0} roster row(s) saved. No emails were sent.`,
+        `${result.imported ?? 0} roster row(s) saved. ${
+          result.skippedDuplicates ?? 0
+        } duplicate(s) skipped. No emails were sent.`,
       );
     } catch (caughtError) {
       setError(

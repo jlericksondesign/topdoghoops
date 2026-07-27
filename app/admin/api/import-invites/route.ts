@@ -20,6 +20,22 @@ type ImportBody = {
   invites?: unknown;
 };
 
+type ExistingInviteRow = {
+  parent_email: string;
+  player_first_name: string;
+  player_last_initial: string;
+  grade: number;
+};
+
+function getInviteDedupeKey(row: ExistingInviteRow) {
+  return [
+    row.parent_email.trim().toLowerCase(),
+    row.player_first_name.trim().toLowerCase(),
+    row.player_last_initial.trim().charAt(0).toLowerCase(),
+    row.grade,
+  ].join("|");
+}
+
 function stringifyInvites(invites: unknown) {
   if (!Array.isArray(invites)) {
     return "";
@@ -102,8 +118,51 @@ export async function POST(request: NextRequest) {
     );
   }
 
+  const uploadedInviteKeys = new Set<string>();
+  let skippedDuplicateUploadRows = 0;
+  const uniqueValidRows = validRows.filter((row) => {
+    const key = getInviteDedupeKey(row);
+
+    if (uploadedInviteKeys.has(key)) {
+      skippedDuplicateUploadRows += 1;
+      return false;
+    }
+
+    uploadedInviteKeys.add(key);
+    return true;
+  });
+  const parentEmails = Array.from(
+    new Set(uniqueValidRows.map((row) => row.parent_email)),
+  );
+  const { data: existingInvites, error: existingInviteError } = await supabase
+    .from("parent_invites")
+    .select("parent_email,player_first_name,player_last_initial,grade")
+    .in("parent_email", parentEmails);
+
+  if (existingInviteError) {
+    return NextResponse.json(
+      { error: existingInviteError.message },
+      { status: 500 },
+    );
+  }
+
+  const existingInviteKeys = new Set(
+    ((existingInvites ?? []) as ExistingInviteRow[]).map(getInviteDedupeKey),
+  );
+  const rowsToInsert = uniqueValidRows.filter(
+    (row) => !existingInviteKeys.has(getInviteDedupeKey(row)),
+  );
+  const skippedExistingRows = uniqueValidRows.length - rowsToInsert.length;
+
+  if (rowsToInsert.length === 0) {
+    return NextResponse.json({
+      imported: 0,
+      skippedDuplicates: skippedDuplicateUploadRows + skippedExistingRows,
+    });
+  }
+
   const expiresAt = getInviteExpirationDate();
-  const inserts = validRows.map((row) => ({
+  const inserts = rowsToInsert.map((row) => ({
     ...row,
     gender: deriveGenderFromDivision(row.division),
     token_hash: hashInviteToken(createInviteToken()),
@@ -117,5 +176,8 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ error: error.message }, { status: 500 });
   }
 
-  return NextResponse.json({ imported: inserts.length });
+  return NextResponse.json({
+    imported: inserts.length,
+    skippedDuplicates: skippedDuplicateUploadRows + skippedExistingRows,
+  });
 }
