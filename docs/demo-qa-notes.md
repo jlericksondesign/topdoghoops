@@ -21,11 +21,12 @@ How to use:
 
 * Screen: `/parent/link-request`
 * Device: Browser / live or local QA
-* Issue: The magic link CTA does not appear to complete the expected sign-in link flow.
-* Expected: Tapping the magic link button should send or simulate sending the parent sign-in link, then show a clear confirmation or next step.
+* Issue: The magic link CTA shows a success-style `Check Your Email` state, but no fresh parent sign-in email arrives. Reproduced on July 27, 2026 with an account that had previously authenticated on July 9; the old link is expired as expected, but a new link was not received.
+* Expected: Tapping the magic link button should actually request/send a new parent sign-in link, then show a clear confirmation or next step. The UI should not claim an email was sent if the backend request fails or is not wired.
+* Notes: Fixed locally on July 27, 2026 by wiring `components/features/auth/MagicLinkRequestForm.tsx` to `POST /parent/link-request/request`, adding signed parent login links at `/parent/verify`, and sending parent sign-in email through Resend.
 * Priority: High
-* Screenshot: Manual QA note from July 5, 2026
-* Status: Open
+* Screenshot: Manual QA notes from July 5 and July 27, 2026
+* Status: Fixed locally - needs production deploy and live email verification
 
 ### 2. Homepage buttons should be Parent Sign In and Kid Sign In
 
