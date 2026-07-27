@@ -213,6 +213,28 @@ function drawFormatBits(matrix: Cell[][]) {
   }
 }
 
+function reserveFormatBits(matrix: Cell[][]) {
+  for (let index = 0; index <= 5; index += 1) {
+    setCell(matrix, 8, index, false);
+  }
+
+  setCell(matrix, 8, 7, false);
+  setCell(matrix, 8, 8, false);
+  setCell(matrix, 7, 8, false);
+
+  for (let index = 9; index < 15; index += 1) {
+    setCell(matrix, 14 - index, 8, false);
+  }
+
+  for (let index = 0; index < 8; index += 1) {
+    setCell(matrix, QR_SIZE - 1 - index, 8, false);
+  }
+
+  for (let index = 8; index < 15; index += 1) {
+    setCell(matrix, 8, QR_SIZE - 15 + index, false);
+  }
+}
+
 function shouldMask(x: number, y: number) {
   return (x + y) % 2 === 0;
 }
@@ -257,6 +279,7 @@ function createQrMatrix(value: string) {
   const dataCodewords = createDataCodewords(value);
   const matrix = createMatrix();
   drawFunctionPatterns(matrix);
+  reserveFormatBits(matrix);
   drawData(matrix, [
     ...dataCodewords,
     ...getErrorCorrectionCodewords(dataCodewords),
