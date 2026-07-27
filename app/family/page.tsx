@@ -21,6 +21,13 @@ type Player = {
   division: string;
 };
 
+type ChildDeviceToken = {
+  expires_at: string | null;
+  last_used_at: string | null;
+  player_id: string;
+  revoked_at: string | null;
+};
+
 type RecentlyApprovedEntry = {
   playerName: string;
   dateShort: string;
@@ -82,8 +89,11 @@ async function getFamily() {
 
   const typedPlayers = players as Player[];
   const playerIds = typedPlayers.map((player) => player.id);
-  const [{ data: approvedSubmissions }, { data: pendingSubmissions }] =
-    await Promise.all([
+  const [
+    { data: approvedSubmissions },
+    { data: pendingSubmissions },
+    { data: deviceTokens },
+  ] = await Promise.all([
       supabase
         .from("shot_submissions")
         .select("player_id,submission_date,total_baskets,approved_at")
@@ -96,6 +106,11 @@ async function getFamily() {
         .select("player_id")
         .in("player_id", playerIds)
         .eq("status", "pending"),
+      supabase
+        .from("child_device_tokens")
+        .select("player_id,last_used_at,revoked_at,expires_at")
+        .in("player_id", playerIds)
+        .is("revoked_at", null),
     ]);
   const playerNameById = new Map(
     typedPlayers.map((player) => [
@@ -109,11 +124,23 @@ async function getFamily() {
     counts[submission.player_id] = (counts[submission.player_id] ?? 0) + 1;
     return counts;
   }, {});
+  const now = new Date();
+  const pairedDevicePlayerIds = new Set(
+    ((deviceTokens ?? []) as ChildDeviceToken[])
+      .filter(
+        (token) =>
+          token.last_used_at &&
+          !token.revoked_at &&
+          (!token.expires_at || new Date(token.expires_at) >= now),
+      )
+      .map((token) => token.player_id),
+  );
 
   return {
     invite: invite as ParentInvite,
     pendingApprovalCount: pendingSubmissions?.length ?? 0,
     pendingApprovalCountByPlayerId,
+    pairedDevicePlayerIds,
     players: typedPlayers,
     recentlyApproved: (approvedSubmissions ?? []).flatMap((submission) => {
       const playerName = playerNameById.get(submission.player_id);
@@ -183,6 +210,7 @@ export default async function FamilyPage() {
             pendingApprovalCount={
               family.pendingApprovalCountByPlayerId[player.id] ?? 0
             }
+            devicePaired={family.pairedDevicePlayerIds.has(player.id)}
           />
         ))}
         <Link
