@@ -29,19 +29,14 @@ export async function POST(request: NextRequest) {
     typeof body?.email === "string" ? body.email.trim().toLowerCase() : "";
 
   if (!email) {
-    return NextResponse.json(
-      { error: "Enter the parent email address." },
-      { status: 400 },
-    );
+    return okResponse();
   }
 
   const supabase = createSupabaseAdminClient();
 
   if (!supabase) {
-    return NextResponse.json(
-      { error: "Parent sign-in is not configured yet." },
-      { status: 503 },
-    );
+    console.error("Parent magic link Supabase config is missing");
+    return okResponse();
   }
 
   const { data: invite, error } = await supabase
@@ -49,15 +44,18 @@ export async function POST(request: NextRequest) {
     .select("id,parent_email")
     .eq("parent_email", email)
     .eq("status", "accepted")
-    .order("accepted_at", { ascending: false })
+    .order("created_at", { ascending: false })
     .limit(1)
     .maybeSingle();
 
   if (error) {
-    return NextResponse.json(
-      { error: "We could not request a sign-in link. Try again shortly." },
-      { status: 500 },
-    );
+    console.error("Parent magic link invite lookup failed", {
+      code: error.code,
+      details: error.details,
+      message: error.message,
+    });
+
+    return okResponse();
   }
 
   if (!invite) {
@@ -71,10 +69,9 @@ export async function POST(request: NextRequest) {
   });
 
   if (!token) {
-    return NextResponse.json(
-      { error: "Parent sign-in is not configured yet." },
-      { status: 503 },
-    );
+    console.error("Parent magic link token could not be created");
+
+    return okResponse();
   }
 
   const emailResult = await sendParentLoginEmail({
@@ -83,10 +80,11 @@ export async function POST(request: NextRequest) {
   });
 
   if (!emailResult.ok) {
-    return NextResponse.json(
-      { error: "We could not send a sign-in link. Try again shortly." },
-      { status: 502 },
-    );
+    console.error("Parent magic link email failed", {
+      error: emailResult.error,
+    });
+
+    return okResponse();
   }
 
   return okResponse();

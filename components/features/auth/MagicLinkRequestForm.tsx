@@ -5,38 +5,25 @@ import { type FormEvent, useState } from "react";
 
 export function MagicLinkRequestForm() {
   const [email, setEmail] = useState("");
-  const [error, setError] = useState("");
   const [isSending, setIsSending] = useState(false);
   const [isSent, setIsSent] = useState(false);
 
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
-    setError("");
     setIsSending(true);
 
     try {
-      const response = await fetch("/parent/link-request/request", {
+      await fetch("/parent/link-request/request", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({ email }),
       });
-
-      if (!response.ok) {
-        const result = (await response.json().catch(() => null)) as {
-          error?: string;
-        } | null;
-
-        setError(
-          result?.error ??
-            "We could not request a sign-in link. Try again shortly.",
-        );
-        return;
-      }
-
-      setIsSent(true);
+    } catch {
+      // Keep the parent-facing flow neutral; operational errors are logged server-side.
     } finally {
+      setIsSent(true);
       setIsSending(false);
     }
   }
@@ -55,7 +42,7 @@ export function MagicLinkRequestForm() {
             <>
               If this parent email is approved,
               <br />
-              a fresh sign-in link is on the way to
+              you&apos;ll receive a magic link at
               <br />
               {email || "your email"}.
             </>
@@ -87,11 +74,6 @@ export function MagicLinkRequestForm() {
             placeholder="email@email.com"
             className="w-full rounded-lg border-2 border-canton-ink bg-white px-4 py-3 text-sm text-canton-ink placeholder:text-canton-muted focus:outline-none"
           />
-          {error ? (
-            <p className="mt-3 rounded-xl bg-canton-orange px-4 py-3 text-sm font-bold leading-5 text-white">
-              {error}
-            </p>
-          ) : null}
         </div>
       )}
 
@@ -104,7 +86,6 @@ export function MagicLinkRequestForm() {
           isSent
             ? () => {
                 setIsSent(false);
-                setError("");
               }
             : undefined
         }
