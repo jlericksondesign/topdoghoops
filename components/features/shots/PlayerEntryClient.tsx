@@ -119,7 +119,7 @@ export function PlayerEntryClient({
   }
 
   return (
-    <main className="flex min-h-dvh flex-col bg-canton-white-grid">
+    <main className="flex h-dvh min-h-[760px] flex-col overflow-hidden bg-canton-white-grid">
       <AppHeaderBar dashboardHref="/player" />
       <FirstVisitDisclosure
         storageKey="topdog-player-entry-rules"
@@ -129,16 +129,10 @@ export function PlayerEntryClient({
         with someone. A parent must approve shots before they count publicly.
       </FirstVisitDisclosure>
 
-      <div
-        className={`relative flex shrink-0 flex-col items-center px-11 ${
-          isRevealed
-            ? "min-h-[520px] justify-center py-10"
-            : "min-h-[440px] pt-12"
-        }`}
-      >
+      <div className="relative flex h-[392px] shrink-0 flex-col items-center px-11">
         {!isRevealed ? (
           <>
-            <div className="relative z-10 w-full max-w-[284px]">
+            <div className="relative z-10 mt-7 w-full max-w-[284px]">
               <ArcadeScoreDisplay playerName={playerName} value={score} padded />
             </div>
 
@@ -158,11 +152,13 @@ export function PlayerEntryClient({
             </div>
           </>
         ) : (
-          <MascotRevealBadge className="h-[260px] w-[260px]" />
+          <div className="flex h-full items-center justify-center">
+            <MascotRevealBadge className="h-[260px] w-[260px]" />
+          </div>
         )}
       </div>
 
-      <div className="relative flex min-h-[360px] flex-1 flex-col items-center bg-canton-tan px-11 pb-[calc(2rem+env(safe-area-inset-bottom))]">
+      <div className="relative flex min-h-0 flex-1 flex-col items-center bg-canton-tan px-11 pb-[calc(1.5rem+env(safe-area-inset-bottom))]">
         <div
           className={`flex h-full w-full max-w-[314px] flex-col items-center transition-opacity duration-500 ${
             isEntry ? "opacity-100" : "pointer-events-none opacity-0"
@@ -172,7 +168,7 @@ export function PlayerEntryClient({
             <ScoreIncrementGrid value={score} onChange={setScore} />
           </div>
 
-          <div className="mt-[120px] flex w-full flex-col items-center gap-6">
+          <div className="mt-[120px] flex w-full flex-col items-center gap-5">
             <FriendBonusToggle
               checked={shotWithFriend}
               onCheckedChange={setShotWithFriend}
@@ -200,7 +196,7 @@ export function PlayerEntryClient({
         </div>
 
         <div
-          className={`absolute inset-0 flex flex-col items-center gap-7 px-10 pb-[calc(2rem+env(safe-area-inset-bottom))] pt-10 transition-opacity duration-500 ${
+          className={`absolute inset-0 flex flex-col items-center gap-6 px-10 pb-[calc(1.5rem+env(safe-area-inset-bottom))] pt-9 transition-opacity duration-500 ${
             isRevealed ? "opacity-100" : "pointer-events-none opacity-0"
           }`}
         >
