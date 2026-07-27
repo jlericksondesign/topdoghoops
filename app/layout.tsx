@@ -1,6 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import "./globals.css";
-import { inter, pixelifySans, barlow } from "./fonts";
+import { inter, robotoMono, barlow } from "./fonts";
 import { LegalFooter } from "@/components/app/LegalFooter";
 
 export const metadata: Metadata = {
@@ -24,7 +24,7 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${inter.variable} ${pixelifySans.variable} ${barlow.variable}`}
+      className={`${inter.variable} ${robotoMono.variable} ${barlow.variable}`}
     >
       <body className="font-sans">
         {children}

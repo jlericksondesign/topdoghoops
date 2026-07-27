@@ -171,7 +171,7 @@ export function PlayerEntryClient({
             <ScoreIncrementGrid value={score} onChange={setScore} />
           </div>
 
-          <div className="mt-auto flex w-full flex-col items-center gap-6">
+          <div className="mt-[120px] flex w-full flex-col items-center gap-6">
             <FriendBonusToggle
               checked={shotWithFriend}
               onCheckedChange={setShotWithFriend}

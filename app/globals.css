@@ -122,7 +122,7 @@
 }
 
 .canton-score-font {
-  font-family: var(--font-pixelify), ui-monospace, "SF Mono", "Courier New", monospace;
+  font-family: var(--font-roboto-mono), ui-monospace, "SF Mono", "Courier New", monospace;
   font-weight: 700;
   font-variant-numeric: tabular-nums;
 }

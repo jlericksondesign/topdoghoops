@@ -17,11 +17,11 @@ export const inter = localFont({
   display: "swap",
 });
 
-export const pixelifySans = localFont({
-  src: "../public/fonts/Pixelify_Sans/PixelifySans-VariableFont_wght.ttf",
-  variable: "--font-pixelify",
+export const robotoMono = localFont({
+  src: "../public/fonts/Roboto_Mono/RobotoMono-VariableFont_wght.ttf",
+  variable: "--font-roboto-mono",
   display: "swap",
-  weight: "400 700",
+  weight: "100 700",
 });
 
 export const barlow = localFont({
